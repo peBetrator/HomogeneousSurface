@@ -132,16 +132,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Axes3D.cpp" />
+    <ClCompile Include="CurvedSheet.cpp" />
     <ClCompile Include="DynCone.cpp" />
     <ClCompile Include="DynSegmentCone.cpp" />
     <ClCompile Include="HalfConeSweep.cpp" />
     <ClCompile Include="Project0.cpp" />
+    <ClCompile Include="UnitPlane.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Axes3D.hpp" />
+    <ClInclude Include="CurvedSheet.hpp" />
     <ClInclude Include="DynCone.hpp" />
     <ClInclude Include="DynSegmentCone.hpp" />
     <ClInclude Include="HalfConeSweep.hpp" />
+    <ClInclude Include="UnitPlane.hpp" />
     <ClInclude Include="Vec3.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

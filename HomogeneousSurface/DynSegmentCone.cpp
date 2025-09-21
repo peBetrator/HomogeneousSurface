@@ -15,7 +15,7 @@ void DynSegmentCone::draw(const Vec3& p0, const Vec3& p1, double r0, double r1) 
     if (L <= 1e-9) return;
 
     Vec3 w{ d.x / L, d.y / L, d.z / L };
-    Vec3 base{ 0,0,1 }; if (std::fabs(w.z) > 0.9) base = { 1,0,0 };
+    Vec3 base{ 0,0,1 }; if (std::fabs(w.z) > 0.9) base = Vec3{ 1,0,0 };
     Vec3 u{ w.y * base.z - w.z * base.y, w.z * base.x - w.x * base.z, w.x * base.y - w.y * base.x };
     double ul = std::sqrt(u.x * u.x + u.y * u.y + u.z * u.z); u = { u.x / ul,u.y / ul,u.z / ul };
     Vec3 v{ w.y * u.z - w.z * u.y, w.z * u.x - w.x * u.z, w.x * u.y - w.y * u.x };
@@ -31,12 +31,22 @@ void DynSegmentCone::draw(const Vec3& p0, const Vec3& p1, double r0, double r1) 
                      p1.z + r1 * (u.z * ca + v.z * sa) };
     }
 
-    glBegin(GL_TRIANGLE_STRIP);
+    glBegin(GL_TRIANGLES);
     for (int j = 0;j < ns;++j) {
-        glVertex3d(ring0[j].x, ring0[j].y, ring0[j].z);
-        glVertex3d(ring1[j].x, ring1[j].y, ring1[j].z);
+        int jn = (j + 1) % ns;
+        const Vec3& a0 = ring0[j];
+        const Vec3& a1 = ring0[jn];
+        const Vec3& b0 = ring1[j];
+        const Vec3& b1 = ring1[jn];
+        // tri1: a0, b0, a1
+        glVertex3d(a0.x, a0.y, a0.z);
+        glVertex3d(b0.x, b0.y, b0.z);
+        glVertex3d(a1.x, a1.y, a1.z);
+        // tri2: a1, b0, b1
+        glVertex3d(a1.x, a1.y, a1.z);
+        glVertex3d(b0.x, b0.y, b0.z);
+        glVertex3d(b1.x, b1.y, b1.z);
     }
-    glVertex3d(ring0[0].x, ring0[0].y, ring0[0].z);
-    glVertex3d(ring1[0].x, ring1[0].y, ring1[0].z);
     glEnd();
 }
+
