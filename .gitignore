@@ -1,0 +1,44 @@
+## === Visual Studio artifacts ===
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## === Build results ===
+[Bb]in/
+[Oo]bj/
+[Dd]ebug*/
+[Rr]elease*/
+x64/
+x86/
+ipch/
+*.pch
+*.pdb
+*.idb
+*.opendb
+*.obj
+*.log
+*.tlog
+*.tmp
+*.cachefile
+*.ilk
+*.exp
+
+## === Other IDE / compiler files ===
+*.aps
+*.ncb
+*.sdf
+*.db
+*.VC.db
+*.VC.VC.opendb
+
+## === Packages / NuGet / vcpkg ===
+packages/
+*.nuget.props
+*.nuget.targets
+
+## === OS junk ===
+Thumbs.db
+Desktop.ini
+*.DS_Store
