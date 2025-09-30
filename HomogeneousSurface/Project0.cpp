@@ -1,164 +1,200 @@
-#include <windows.h>
-#include <GL/gl.h>
-#pragma comment(lib,"OpenGL32.lib")
-#include <GL/glu.h>
-#pragma comment(lib,"Glu32.lib")
-#pragma comment (lib, "legacy_stdio_definitions.lib")
-#include "GL/glaux.h"
-#pragma comment(lib,"Glaux.lib")
+#include <windows.h> 
+#include <GL/gl.h> 
+#pragma comment(lib,"OpenGL32.lib") 
+#include <GL/glu.h> 
+#pragma comment(lib,"Glu32.lib") 
+#pragma comment (lib, "legacy_stdio_definitions.lib") 
+#include "GL/glaux.h" 
+#pragma comment(lib,"Glaux.lib") 
 
-#include <cmath>
-#include <algorithm>
+#include "LineSegmentCone.hpp"
+#include "CircleCone.hpp"
+#include "ParabolaCone.hpp"
 
-// наши классы
-#include "Vec3.hpp"
-#include "Axes3D.hpp"
-#include "CurvedSheet.hpp"
-#include "DynCone.hpp"
-#include "DynSegmentCone.hpp"
-#include "HalfConeSweep.hpp"
-#include "UnitPlane.hpp"
+static LineSegmentCone gLineCone(12, 8, 3.0f); // levels, segments, depth
+static CircleCone gCircle(12, 24, 3.0f);
+static ParabolaCone gParabola(12, 24, 3.0f);
 
-// -------------------- Глобальные объекты сцены --------------------
-static Axes3D g_axes;
-static DynCone         g_ball(8, 10);         // «окружность» как перевёрнутый конус
-static CurvedSheet g_asym(12);   // кривая как «полуконус»
-static UnitPlane g_plane;
+void initScene() {
+	gLineCone.build();
 
-// -------------------- Глобальные переменные --------------------
-static const double H = 1.6;   // одинаковая высота “в глубину”
-static double XM = 1.0;        // Точка пересечения с соединительной плоскостью (внутри ПН четверти)
-static double YM = -1.0;
+	gCircle.build();
 
-// -------------------- Матрицы/проекция --------------------
+	gParabola.build();
+}
+
 void CALLBACK resize(int width, int height)
 {
+	// Здесь указывается часть окна в пределах которой 
+	// будут рисовать функции OpenGL. 
 	GLuint wp = width < height ? width - 20 : height - 20;
 	glViewport(10, 10, wp, wp);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
+
+	// Устанавливаем тип проекции 
+	// glOrtho - параллельная 
+	// glFrustum - перспектива 
+	// Параметры о обеих функции идентичны: 
+	// они задают объем видимости 
 	glOrtho(-6.2, 6.2, -6.2, 6.2, 2.0, 12.0);
+	//   glFrustum(-5.0, 5.0, -5.0, 5.0, 2.0, 12.0);  
 
 	glMatrixMode(GL_MODELVIEW);
 }
 
-// -------------------- Рендер --------------------
-void CALLBACK display()
+void CALLBACK display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//   glClear(GL_COLOR_BUFFER_BIT); 
+	//   glClear(GL_DEPTH_BUFFER_BIT); 
 
 	glPushMatrix();
 	glTranslated(0.0, 0.0, -6.0);
-	// Ротация камеры
 	glRotated(35.0, 1.0, 0.0, 0.0);
 	glRotated(-35.0, 0.0, 1.0, 0.0);
 
-	// Система координат (x y z)
-	glPointSize(6.0f);
-	glBegin(GL_POINTS); glColor3d(0, 0, 0); glVertex3d(0, 0, 0); glEnd();
-	g_axes.draw();
+	glPointSize(10.0f);
+	glEnable(GL_POINT_SMOOTH);
 
-	// 1) Окружность-конус (фиолетовый + чёрный каркас)
-	glPushMatrix();
-	glTranslated(-2.0, 2.0, 0.0);
-	glRotated(180.0, 1, 0, 0);
-	glScaled(0.6, 0.6, H);
-
-	// заливка
-	glColor3d(1.0, 0.0, 1.0);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	g_ball.draw();
-
-	// каркас
-	glEnable(GL_POLYGON_OFFSET_LINE);
-	glPolygonOffset(-1, -1);
+	glBegin(GL_POINTS);
 	glColor3d(0.0, 0.0, 0.0);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glLineWidth(1.0f);
-	g_ball.draw();
-	glDisable(GL_POLYGON_OFFSET_LINE);
+	glVertex3f(0.0f, 0.0f, 0.0f);
+	glEnd();
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // вернуть по умолчанию
+	glDisable(GL_POINT_SMOOTH);
+
+	glLineWidth(1.5f);
+	glEnable(GL_LINE_SMOOTH);
+
+	glBegin(GL_LINES);
+	// Axa X 
+	glColor3d(0.0, 0.0, 0.0);
+	glVertex3d(-5.5, 0.0, 0.0);
+	glColor3d(1.0, 0.0, 0.0);
+	glVertex3d(5.5, 0.0, 0.0);
+	// Axa Y 
+	glColor3d(0.0, 0.0, 0.0);
+	glVertex3d(0.0, -5.5, 0.0);
+	glColor3d(0.0, 1.0, 0.0);
+	glVertex3d(0.0, 5.5, 0.0);
+	// Axa Z 
+	glColor3d(0.0, 0.0, 0.0);
+	glVertex3d(0.0, 0.0, -5.5);
+	glColor3d(0.0, 0.0, 1.0);
+	glVertex3d(0.0, 0.0, 5.5);
+	glEnd();
+
+	// Con X 
+	glColor3d(1.0, 0.0, 0.0);
+	glPushMatrix();
+	glTranslated(5.3f, 0.0f, 0.0f);
+	glRotated(90.0, 0.0f, 1.0f, 0.0f);
+	auxSolidCone(0.1f, 0.2f);
 	glPopMatrix();
 
-
-	// 2) Соединительный усечённый конус (оранжевый + чёрный каркас)
-	{
-		const Vec3 pA = { -2.0,  2.0, 0.0 }; // апекс конуса
-		const Vec3 pB = { XM,   YM,  0.0 };  // из CurvedSheet.cpp
-
-		const double dx = pB.x - pA.x, dy = pB.y - pA.y;
-		const double len = std::sqrt(dx * dx + dy * dy);
-		const double angDeg = std::atan2(dy, dx) * 180.0 / 3.14159265358979323846;
-
-		glPushMatrix();
-		glTranslated(pA.x, pA.y, 0.0);
-		glRotated(angDeg, 0, 0, 1);
-		glScaled(len, 0.012, H);     // длина × ширина × глубина
-
-		glColor3d(1.0, 0.5, 0.0);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		g_plane.draw();
-
-		glEnable(GL_POLYGON_OFFSET_LINE); glPolygonOffset(-1, -1);
-		glColor3d(0, 0, 0); glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); glLineWidth(1.0f);
-		g_plane.draw();
-		glDisable(GL_POLYGON_OFFSET_LINE); glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		glPopMatrix();
-	}
-
-
-	// 3) Асимптота — изогнутая плоскость (бирюзовая + каркас), ПН четверть, середина — M
+	// Con Y 
+	glColor3d(0.0, 1.0, 0.0);
 	glPushMatrix();
-	glScaled(1.0, 1.0, H);             // одинаковая "высота" вглубь
-
-	glColor3d(0.0, 0.6, 0.6);          // заливка
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	g_asym.draw(0.0, 0.0);
-
-	glEnable(GL_POLYGON_OFFSET_LINE);  // каркас поверх
-	glPolygonOffset(-1, -1);
-	glColor3d(0.0, 0.0, 0.0);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glLineWidth(1.0f);
-	g_asym.draw(0.0, 0.0);
-
-	glDisable(GL_POLYGON_OFFSET_LINE);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glTranslated(0.0f, 5.3f, 0.0f);
+	glRotated(-90.0, 1.0f, 0.0f, 0.0f);
+	auxSolidCone(0.1f, 0.2f);
 	glPopMatrix();
 
+	// Con Z 
+	glColor3d(0.0, 0.0, 1.0);
+	glPushMatrix();
+	glTranslated(0.0f, 0.0f, 5.3f);
+	auxSolidCone(0.1f, 0.2f);
+	glPopMatrix();
+
+	//VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV 
+	// TODO: add draw code for native data here  
+	// to learn OpenGL functions 
+	gLineCone.draw();
+	gCircle.draw();
+	gParabola.draw();
+	glFlush();
+
+
+	//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 
 
 	glPopMatrix();
 
 	auxSwapBuffers();
 }
 
-// -------------------- Точка входа --------------------
 int main()
 {
-	// окно
+	// Устанавливаем координаты окна на экране 
+	// левый верхний угол (0, 0) 
+	// ширина и высота 500  
 	auxInitPosition(0, 0, 500, 500);
+
+	// Устанавливаем параметры контекста OpenGL 
 	auxInitDisplayMode(AUX_RGB | AUX_DEPTH | AUX_DOUBLE);
+
+	// Создаем окно на экране 
 	auxInitWindow(L"OpenGL");
 
-	// коллбеки
+	initScene();
+
+	// Это окно будет получать сообщения о событиях 
+	// от клавиатуры, мыши, таймера и любые другие сообщения. 
+	// Пока не поступают никакие сообщения циклически будет 
+	// вызываться функция display(). 
+	// Так можно создавать анимации. 
+	// Если нужно статическое изображение 
+	// следующая строка может быть закомментирована 
 	auxIdleFunc(display);
+
+	// В случае изменения размеров окна – поступает  
+	// соответствующее сообщение 
+	// В Windows - это WM_SIZE. 
+	// Указываем, что функция resize() должна быть вызвана  
+	// каждый раз когда изменяются размеры окна 
 	auxReshapeFunc(resize);
 
-	// состояние OpenGL
+	// Далее задаем ряд тестов и параметров 
+	// Включается тест прозрачности, т.е. будет приниматься 
+	// во внимание 4-й параметр в glColor() 
+	glEnable(GL_ALPHA_TEST);
+
+	// Тест глубины 
 	glEnable(GL_DEPTH_TEST);
+
+	// Функция glColor() будет задавать  
+	// свойства материалов. 
+	// Следовательно, отсутствует необходимость 
+	// в дополнительном вызове функции glMaterialfv() 
 	glEnable(GL_COLOR_MATERIAL);
+
+	// Разрешаем освешение 
 	glEnable(GL_LIGHTING);
+
+	// Активируем источник освещения с номером 0 
 	glEnable(GL_LIGHT0);
+	// Задаем позицию источника освещения 
 	float pos[4] = { 3.0f, 3.0f, 3.0f, 1.0f };
-	float dir[3] = { -1.0f,-1.0f,-1.0f };
+	float dir[3] = { -1.0f, -1.0f, -1.0f };
 	glLightfv(GL_LIGHT0, GL_POSITION, pos);
 	glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, dir);
+
+	// Разрешаем смешивание цветов (для прозрачных поверхностей) 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glClearColor(1, 1, 1, 1);
 
+	// Устанавливаем цвет начальной закраски окна 
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+	// Указываем, что функция display() должна использоваться для 
+	// перерисовки окна. 
+	// Эта функция будет вызвана каждый раз когда возникает 
+	// необходимость в перерисовки окна,   
+	// т.е. при поступлении сообщения WM_PAINT от Windows 
+	// Например, когда окно развертывается на весь экран. 
 	auxMainLoop(display);
+
 	return 0;
 }

@@ -18,35 +18,23 @@
     <ClCompile Include="Project0.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HalfConeSweep.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DynCone.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DynSegmentCone.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Axes3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UnitPlane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CurvedSheet.cpp">
+    <ClCompile Include="LineSegmentCone.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CircleCone.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ParabolaCone.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DynCone.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HalfConeSweep.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DynSegmentCone.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Vec3.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -56,7 +44,16 @@
     <ClInclude Include="UnitPlane.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CurvedSheet.hpp">
+    <ClInclude Include="ISurface3D.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LineSegmentCone.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CircleCone.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ParabolaCone.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
