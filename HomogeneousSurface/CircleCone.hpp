@@ -40,7 +40,10 @@ private:
 
     // удобный маппер индексов по кольцу/углу
     inline unsigned ringIndex(int l, int i) const {
-        // +1 из-за апекса M(0,0,0) в начале
-        return 1u + (unsigned)(l - 1) * (mSegments + 1u) + (unsigned)i;
+        const int L = mLevels;
+        const int S = mSegments;
+        // -L..-1 -> 0..L-1 ; +1..+L -> L..2L-1
+        int ordinal = (l < 0) ? (l + L) : (l - 1 + L);
+        return 1u + (unsigned)ordinal * (S + 1u) + (unsigned)i;
     }
 };

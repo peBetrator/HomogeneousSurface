@@ -26,49 +26,62 @@ void CircleCone::build() {
     mVerts.clear();
     mIdx.clear();
 
-    const int   L = clampMin(mLevels, 1);
-    const int   S = clampMin(mSegments, 3);   // минимум 3 для корректной триангуляции
-    const float D = clampMin(mDepth, 0.0f);
+    const int   L = std::max(1, mLevels);
+    const int   S = std::max(1, mSegments);
+    const float D = std::max(0.f, mDepth);
 
-    // 0) Апекс M(0,0,0)
-    const unsigned apexIndex = 0;
-    mVerts.push_back({ 0.0f, 0.0f, 0.0f });
+    const unsigned apex = 0;
+    mVerts.push_back({ 0.f, 0.f, 0.f });
 
-    // 1) Кольца уровней (l = 1..L)
-    // s = l/L, z = s * D; координаты на z=1 масштабируем к M(0,0)
-    for (int l = 1; l <= L; ++l) {
-        float s = (float)l / (float)L;   // 0..1
+    auto pointOnCircleZ1 = [&](float t)->Vec3 {
+        // окружность центра (-2, 2), радиус sqrt(2)
+        const float cx = -2.f, cy = 2.f, R = std::sqrt(2.f);
+        float ang = t * 2.f * 3.1415926535f;
+        return { cx + R * std::cos(ang), cy + R * std::sin(ang), 1.f };
+        };
+
+    auto emitRing = [&](int l) {
+        float s = (float)l / (float)L;   // s ∈ [-1..-1/L] U [1/L..1]
         float z = s * D;
-
         for (int i = 0; i <= S; ++i) {
-            // угловой параметр (замыкаем кольцо дублированием первой вершины)
-            float t = (float)i / (float)S;       // 0..1
-            float theta = t * 2.0f * (float)M_PI;
-
-            // базовая точка окружности на z=1
-            Vec3 P = fromPolar(mCx, mCy, mR, theta);
-
-            // масштабирование к M и перенос по Z
+            float t = (float)i / (float)S;
+            Vec3  P = pointOnCircleZ1(t);
             mVerts.push_back({ s * P.x, s * P.y, z });
         }
-    }
+        };
 
-    // 2.a) Вентилятор от апекса к первому кольцу
+    // низ: -L..-1
+    for (int l = -L; l <= -1; ++l) emitRing(l);
+    // верх: +1..+L
+    for (int l = 1; l <= L; ++l) emitRing(l);
+
+    // Веера от апекса к первым кольцам
     for (int i = 0; i < S; ++i) {
-        unsigned v0 = apexIndex;
-        unsigned v1 = ringIndex(1, i + 1);
-        unsigned v2 = ringIndex(1, i);
-        mIdx.push_back(v0); mIdx.push_back(v1); mIdx.push_back(v2);
+        // нижний веер (если включишь GL_CULL_FACE и нужен наружный фейс, поменяй местами v1/v2)
+        mIdx.push_back(apex); mIdx.push_back(ringIndex(-1, i + 1)); mIdx.push_back(ringIndex(-1, i));
+        // верхний веер
+        mIdx.push_back(apex); mIdx.push_back(ringIndex(+1, i + 1)); mIdx.push_back(ringIndex(+1, i));
     }
 
-    // 2.b) Между кольцами: два треугольника на каждый «квад»
-    for (int l = 1; l < L; ++l) {
+    // сшивка низ: l = -L..-2
+    for (int l = -L; l <= -2; ++l) {
         for (int i = 0; i < S; ++i) {
             unsigned v00 = ringIndex(l, i);
             unsigned v01 = ringIndex(l, i + 1);
             unsigned v10 = ringIndex(l + 1, i);
             unsigned v11 = ringIndex(l + 1, i + 1);
+            mIdx.push_back(v00); mIdx.push_back(v01); mIdx.push_back(v10);
+            mIdx.push_back(v01); mIdx.push_back(v11); mIdx.push_back(v10);
+        }
+    }
 
+    // сшивка верх: l = 1..L-1
+    for (int l = 1; l <= L - 1; ++l) {
+        for (int i = 0; i < S; ++i) {
+            unsigned v00 = ringIndex(l, i);
+            unsigned v01 = ringIndex(l, i + 1);
+            unsigned v10 = ringIndex(l + 1, i);
+            unsigned v11 = ringIndex(l + 1, i + 1);
             mIdx.push_back(v00); mIdx.push_back(v01); mIdx.push_back(v10);
             mIdx.push_back(v01); mIdx.push_back(v11); mIdx.push_back(v10);
         }

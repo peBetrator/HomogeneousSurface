@@ -21,47 +21,69 @@ void LineSegmentCone::build() {
     const int   S = clampMin(mSegments, 1);
     const float D = clampMin(mDepth, 0.0f);
 
-    // A(-1,1,1) -> B(1,-1,1) на z=1
     const Vec3 A = { -1.0f,  1.0f, 1.0f };
     const Vec3 B = { 1.0f, -1.0f, 1.0f };
 
-    // 0) апекс M(0,0,0)
     const unsigned apexIndex = 0;
-    mVerts.push_back({ 0.0f, 0.0f, 0.0f });
+    mVerts.push_back({ 0.f, 0.f, 0.f });
 
-    // удобный доступ к индексу в кольце
-    auto ringIndex = [&](int l, int i)->unsigned {
-        return 1u + (unsigned)(l - 1) * (S + 1u) + (unsigned)i;
+    auto lerp = [](const Vec3& a, const Vec3& b, float t)->Vec3 {
+        return { a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, 1.0f };
         };
 
-    // 1) кольца уровней
-    for (int l = 1; l <= L; ++l) {
-        float s = (float)l / (float)L;   // 0..1
+    // если не выносишь в .hpp, можно так:
+    auto ringIndexLocal = [&](int l, int i)->unsigned {
+        int ordinal = (l < 0) ? (l + L) : (l - 1 + L);
+        return 1u + (unsigned)ordinal * (S + 1u) + (unsigned)i;
+        };
+
+    auto emitRing = [&](int l) {
+        float s = (float)l / (float)L; // s ∈ [-1..-1/L] U [1/L..1]
         float z = s * D;
         for (int i = 0; i <= S; ++i) {
             float t = (float)i / (float)S;
-            Vec3 P = lerp(A, B, t);          // точка на отрезке (z=1)
+            Vec3  P = lerp(A, B, t);      // точка на отрезке на плоскости z=1
             mVerts.push_back({ s * P.x, s * P.y, z });
         }
-    }
+        };
 
-    // 2.a) вентилятор апекса к первому кольцу
+    // нижние уровни: -L..-1
+    for (int l = -L; l <= -1; ++l) emitRing(l);
+    // верхние уровни: +1..+L
+    for (int l = 1; l <= L; ++l) emitRing(l);
+
+    // веера от апекса к первым кольцам
     for (int i = 0; i < S; ++i) {
-        unsigned v0 = apexIndex;
-        unsigned v1 = ringIndex(1, i + 1);
-        unsigned v2 = ringIndex(1, i);
-        mIdx.push_back(v0); mIdx.push_back(v1); mIdx.push_back(v2);
+        // низ (если включён GL_CULL_FACE и нужен одинаковый «внешний» фейс —
+        // можно поменять местами последние два индекса)
+        mIdx.push_back(apexIndex);
+        mIdx.push_back(ringIndexLocal(-1, i + 1));
+        mIdx.push_back(ringIndexLocal(-1, i));
+
+        // верх
+        mIdx.push_back(apexIndex);
+        mIdx.push_back(ringIndexLocal(+1, i + 1));
+        mIdx.push_back(ringIndexLocal(+1, i));
     }
 
-    // 2.b) между уровнями
-    for (int l = 1; l < L; ++l) {
+    // сшивка колец: низ
+    for (int l = -L; l <= -2; ++l) {
         for (int i = 0; i < S; ++i) {
-            unsigned v00 = ringIndex(l, i);
-            unsigned v01 = ringIndex(l, i + 1);
-            unsigned v10 = ringIndex(l + 1, i);
-            unsigned v11 = ringIndex(l + 1, i + 1);
-
-            // два треугольника из «квада»
+            unsigned v00 = ringIndexLocal(l, i);
+            unsigned v01 = ringIndexLocal(l, i + 1);
+            unsigned v10 = ringIndexLocal(l + 1, i);
+            unsigned v11 = ringIndexLocal(l + 1, i + 1);
+            mIdx.push_back(v00); mIdx.push_back(v01); mIdx.push_back(v10);
+            mIdx.push_back(v01); mIdx.push_back(v11); mIdx.push_back(v10);
+        }
+    }
+    // сшивка колец: верх
+    for (int l = 1; l <= L - 1; ++l) {
+        for (int i = 0; i < S; ++i) {
+            unsigned v00 = ringIndexLocal(l, i);
+            unsigned v01 = ringIndexLocal(l, i + 1);
+            unsigned v10 = ringIndexLocal(l + 1, i);
+            unsigned v11 = ringIndexLocal(l + 1, i + 1);
             mIdx.push_back(v00); mIdx.push_back(v01); mIdx.push_back(v10);
             mIdx.push_back(v01); mIdx.push_back(v11); mIdx.push_back(v10);
         }

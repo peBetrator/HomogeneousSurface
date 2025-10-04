@@ -18,7 +18,7 @@ static CoordinateAxes gAxes;
 static Background gBackground;
 
 static LineSegmentCone gLineCone(12, 8, 3.0f); // levels, segments, depth
-static CircleCone gCircle(12, 8, 3.0f);
+static CircleCone gCircle(12, 24, 3.0f);
 static ParabolaCone gParabola(12, 8, 3.0f);
 
 void initScene() {
@@ -66,7 +66,7 @@ void CALLBACK display(void)
 	//   glClear(GL_COLOR_BUFFER_BIT); 
 	//   glClear(GL_DEPTH_BUFFER_BIT); 
 
-	gBackground.draw();
+	//gBackground.draw();
 
 	glPushMatrix();
 	glTranslated(0.0, 0.0, -6.0);
