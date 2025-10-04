@@ -3,7 +3,7 @@
 #define NOMINMAX
 #include <windows.h>
 #endif
-#include <GL/gl.h>    // или <GL/glut.h>/<GL/freeglut.h> — как у тебя в проекте
+#include <GL/gl.h>
 
 LineSegmentCone::LineSegmentCone(int levels, int segments, float depth)
     : mLevels(levels), mSegments(segments), mDepth(depth) {

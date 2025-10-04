@@ -10,16 +10,16 @@
 #include "CoordinateAxes.hpp"
 #include "Background.hpp"
 
-#include "LineSegmentCone.hpp"
-#include "CircleCone.hpp"
-#include "ParabolaCone.hpp"
+#include "LineSegmentConeLit.hpp"
+#include "CircleConeLit.hpp"
+#include "ParabolaConeLit.hpp"
 
 static CoordinateAxes gAxes;
 static Background gBackground;
 
-static LineSegmentCone gLineCone(12, 8, 3.0f); // levels, segments, depth
-static CircleCone gCircle(12, 24, 3.0f);
-static ParabolaCone gParabola(12, 8, 3.0f);
+static LineSegmentConeLit gLineCone(12, 8, 3.0f); // levels, segments, depth
+static CircleConeLit gCircle(12, 24, 3.0f);
+static ParabolaConeLit gParabola(12, 8, 3.0f);
 
 void initScene() {
 	gAxes.setLength(5.5f);
@@ -33,10 +33,13 @@ void initScene() {
 	}
 
 	gLineCone.build();
+    gLineCone.setWireframe(true);
 
 	gCircle.build();
+    gCircle.setWireframe(true);
 
 	gParabola.build();
+    gParabola.setWireframe(true);
 }
 
 void CALLBACK resize(int width, int height)
@@ -66,12 +69,29 @@ void CALLBACK display(void)
 	//   glClear(GL_COLOR_BUFFER_BIT); 
 	//   glClear(GL_DEPTH_BUFFER_BIT); 
 
-	//gBackground.draw();
+	gBackground.draw();
 
 	glPushMatrix();
 	glTranslated(0.0, 0.0, -6.0);
 	glRotated(35.0, 1.0, 0.0, 0.0);
 	glRotated(-35.0, 0.0, 1.0, 0.0);
+
+    // === Позиции источников света (устанавливаются каждый кадр) ===
+    GLfloat pos0[4] = { 3.f,  3.f,  3.f, 1.f }; // точечный источник справа сверху спереди
+    GLfloat pos1[4] = { -3.f,  3.f, -3.f, 1.f }; // слева сверху сзади
+    GLfloat pos2[4] = { 0.f, -3.f,  3.f, 1.f }; // снизу спереди
+
+    glLightfv(GL_LIGHT0, GL_POSITION, pos0);
+    glLightfv(GL_LIGHT1, GL_POSITION, pos1);
+    glLightfv(GL_LIGHT2, GL_POSITION, pos2);
+
+    // Можно также задать цвет/интенсивность:
+    GLfloat diffuse0[4] = { 1.f, 0.9f, 0.9f, 1.f };
+    GLfloat diffuse1[4] = { 0.9f, 1.f, 0.9f, 1.f };
+    GLfloat diffuse2[4] = { 0.9f, 0.9f, 1.f, 1.f };
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse0);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse1);
+    glLightfv(GL_LIGHT2, GL_DIFFUSE, diffuse2);
 
 	gAxes.draw();
 
@@ -93,74 +113,76 @@ void CALLBACK display(void)
 
 int main()
 {
-	// Устанавливаем координаты окна на экране 
-	// левый верхний угол (0, 0) 
-	// ширина и высота 500  
-	auxInitPosition(0, 0, 500, 500);
+    // Окно 500x500 в левом верхнем углу
+    auxInitPosition(0, 0, 500, 500);
 
-	// Устанавливаем параметры контекста OpenGL 
-	auxInitDisplayMode(AUX_RGB | AUX_DEPTH | AUX_DOUBLE);
+    // Контекст: RGB + Z-буфер + двойная буферизация
+    auxInitDisplayMode(AUX_RGB | AUX_DEPTH | AUX_DOUBLE);
 
-	// Создаем окно на экране 
-	auxInitWindow(L"OpenGL");
+    // Создать окно
+    auxInitWindow(L"OpenGL");
 
-	initScene();
+    // Инициализация сцены (фон, оси, геометрия и т.д.)
+    initScene();
 
-	// Это окно будет получать сообщения о событиях 
-	// от клавиатуры, мыши, таймера и любые другие сообщения. 
-	// Пока не поступают никакие сообщения циклически будет 
-	// вызываться функция display(). 
-	// Так можно создавать анимации. 
-	// Если нужно статическое изображение 
-	// следующая строка может быть закомментирована 
-	auxIdleFunc(display);
+    // Коллбэки
+    auxIdleFunc(display);
+    auxReshapeFunc(resize);
 
-	// В случае изменения размеров окна – поступает  
-	// соответствующее сообщение 
-	// В Windows - это WM_SIZE. 
-	// Указываем, что функция resize() должна быть вызвана  
-	// каждый раз когда изменяются размеры окна 
-	auxReshapeFunc(resize);
+    // Глобальные GL-состояния
+    glEnable(GL_DEPTH_TEST);           // Z-тест
+    glEnable(GL_BLEND);                // прозрачность в фигурах
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	// Далее задаем ряд тестов и параметров 
-	// Включается тест прозрачности, т.е. будет приниматься 
-	// во внимание 4-й параметр в glColor() 
-	glEnable(GL_ALPHA_TEST);
+    glEnable(GL_COLOR_MATERIAL);       // материал берём из glColor
+    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 
-	// Тест глубины 
-	glEnable(GL_DEPTH_TEST);
+    glShadeModel(GL_SMOOTH);           // Gouraud
+    glEnable(GL_NORMALIZE);            // корректные нормали при масштабах
 
-	// Функция glColor() будет задавать  
-	// свойства материалов. 
-	// Следовательно, отсутствует необходимость 
-	// в дополнительном вызове функции glMaterialfv() 
-	glEnable(GL_COLOR_MATERIAL);
+    glClearColor(1.f, 1.f, 1.f, 1.f);  // фон окна (на случай, если нет фоновой текстуры)
 
-	// Разрешаем освешение 
-	glEnable(GL_LIGHTING);
+    // --- Освещение ---
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_LIGHT1);
+    glEnable(GL_LIGHT2);
 
-	// Активируем источник освещения с номером 0 
-	glEnable(GL_LIGHT0);
-	// Задаем позицию источника освещения 
-	float pos[4] = { 3.0f, 3.0f, 3.0f, 1.0f };
-	float dir[3] = { -1.0f, -1.0f, -1.0f };
-	glLightfv(GL_LIGHT0, GL_POSITION, pos);
-	glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, dir);
+    // Глобальный «окружающий» свет
+    {
+        GLfloat globalAmbient[4] = { 0.2f, 0.2f, 0.2f, 1.f };
+        glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbient);
+    }
 
-	// Разрешаем смешивание цветов (для прозрачных поверхностей) 
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    // Начальные параметры источников (позиции лучше ставить каждый кадр в display())
+    {
+        // LIGHT0 — тёплый сверху справа
+        GLfloat dif0[4] = { 0.9f, 0.85f, 0.8f, 1.f };
+        GLfloat amb0[4] = { 0.10f, 0.10f, 0.10f, 1.f };
+        GLfloat spc0[4] = { 0.7f, 0.7f, 0.7f, 1.f };
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, dif0);
+        glLightfv(GL_LIGHT0, GL_AMBIENT, amb0);
+        glLightfv(GL_LIGHT0, GL_SPECULAR, spc0);
 
-	// Устанавливаем цвет начальной закраски окна 
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        // LIGHT1 — холодный слева
+        GLfloat dif1[4] = { 0.6f, 0.7f, 0.9f, 1.f };
+        GLfloat amb1[4] = { 0.05f, 0.05f, 0.08f, 1.f };
+        GLfloat spc1[4] = { 0.3f, 0.3f, 0.4f, 1.f };
+        glLightfv(GL_LIGHT1, GL_DIFFUSE, dif1);
+        glLightfv(GL_LIGHT1, GL_AMBIENT, amb1);
+        glLightfv(GL_LIGHT1, GL_SPECULAR, spc1);
 
-	// Указываем, что функция display() должна использоваться для 
-	// перерисовки окна. 
-	// Эта функция будет вызвана каждый раз когда возникает 
-	// необходимость в перерисовки окна,   
-	// т.е. при поступлении сообщения WM_PAINT от Windows 
-	// Например, когда окно развертывается на весь экран. 
-	auxMainLoop(display);
+        // LIGHT2 — сзади
+        GLfloat dif2[4] = { 0.5f, 0.5f, 0.5f, 1.f };
+        GLfloat amb2[4] = { 0.03f, 0.03f, 0.03f, 1.f };
+        GLfloat spc2[4] = { 0.6f, 0.6f, 0.6f, 1.f };
+        glLightfv(GL_LIGHT2, GL_DIFFUSE, dif2);
+        glLightfv(GL_LIGHT2, GL_AMBIENT, amb2);
+        glLightfv(GL_LIGHT2, GL_SPECULAR, spc2);
+    }
 
-	return 0;
+    // Главный цикл
+    auxMainLoop(display);
+    return 0;
 }

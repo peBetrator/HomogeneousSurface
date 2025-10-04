@@ -133,19 +133,24 @@
   <ItemGroup>
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="CircleCone.cpp" />
+    <ClCompile Include="CircleConeLit.cpp" />
     <ClCompile Include="CoordinateAxes.cpp" />
     <ClCompile Include="LineSegmentCone.cpp" />
+    <ClCompile Include="LineSegmentConeLit.cpp" />
     <ClCompile Include="ParabolaCone.cpp" />
+    <ClCompile Include="ParabolaConeLit.cpp" />
     <ClCompile Include="Project0.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Background.hpp" />
     <ClInclude Include="CircleCone.hpp" />
+    <ClInclude Include="CircleConeLit.hpp" />
     <ClInclude Include="CoordinateAxes.hpp" />
     <ClInclude Include="ISurface3D.hpp" />
     <ClInclude Include="LineSegmentCone.hpp" />
+    <ClInclude Include="LineSegmentConeLit.hpp" />
     <ClInclude Include="ParabolaCone.hpp" />
-    <ClInclude Include="Vec3.hpp" />
+    <ClInclude Include="ParabolaConeLit.hpp" />
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="..\assets\background_lion.bmp">
