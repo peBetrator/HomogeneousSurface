@@ -131,21 +131,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Axes3D.cpp" />
     <ClCompile Include="CircleCone.cpp" />
+    <ClCompile Include="CoordinateAxes.cpp" />
     <ClCompile Include="LineSegmentCone.cpp" />
     <ClCompile Include="ParabolaCone.cpp" />
     <ClCompile Include="Project0.cpp" />
-    <ClCompile Include="UnitPlane.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Axes3D.hpp" />
     <ClInclude Include="CircleCone.hpp" />
+    <ClInclude Include="CoordinateAxes.hpp" />
     <ClInclude Include="ISurface3D.hpp" />
     <ClInclude Include="LineSegmentCone.hpp" />
     <ClInclude Include="ParabolaCone.hpp" />
-    <ClInclude Include="UnitPlane.hpp" />
     <ClInclude Include="Vec3.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="..\..\..\..\Downloads\background_lion.bmp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
+    </CopyFileToFolders>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

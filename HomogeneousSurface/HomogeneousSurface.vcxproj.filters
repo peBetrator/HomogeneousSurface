@@ -18,12 +18,6 @@
     <ClCompile Include="Project0.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Axes3D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UnitPlane.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LineSegmentCone.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -33,15 +27,12 @@
     <ClCompile Include="ParabolaCone.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CoordinateAxes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vec3.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Axes3D.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UnitPlane.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ISurface3D.hpp">
@@ -56,5 +47,13 @@
     <ClInclude Include="ParabolaCone.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CoordinateAxes.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="..\..\..\..\Downloads\background_lion.bmp">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>

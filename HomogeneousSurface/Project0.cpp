@@ -7,15 +7,25 @@
 #include "GL/glaux.h" 
 #pragma comment(lib,"Glaux.lib") 
 
+#include "CoordinateAxes.hpp"
+
 #include "LineSegmentCone.hpp"
 #include "CircleCone.hpp"
 #include "ParabolaCone.hpp"
 
+static CoordinateAxes gAxes;
+
 static LineSegmentCone gLineCone(12, 8, 3.0f); // levels, segments, depth
-static CircleCone gCircle(12, 24, 3.0f);
-static ParabolaCone gParabola(12, 24, 3.0f);
+static CircleCone gCircle(12, 8, 3.0f);
+static ParabolaCone gParabola(12, 8, 3.0f);
 
 void initScene() {
+	gAxes.setLength(5.5f);
+	gAxes.setArrow(0.1f, 0.2f);
+	gAxes.setLineWidth(1.5f);
+	gAxes.setShowOriginPoint(true);
+	gAxes.setLineSmooth(true);
+
 	gLineCone.build();
 
 	gCircle.build();
@@ -55,59 +65,7 @@ void CALLBACK display(void)
 	glRotated(35.0, 1.0, 0.0, 0.0);
 	glRotated(-35.0, 0.0, 1.0, 0.0);
 
-	glPointSize(10.0f);
-	glEnable(GL_POINT_SMOOTH);
-
-	glBegin(GL_POINTS);
-	glColor3d(0.0, 0.0, 0.0);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-	glEnd();
-
-	glDisable(GL_POINT_SMOOTH);
-
-	glLineWidth(1.5f);
-	glEnable(GL_LINE_SMOOTH);
-
-	glBegin(GL_LINES);
-	// Axa X 
-	glColor3d(0.0, 0.0, 0.0);
-	glVertex3d(-5.5, 0.0, 0.0);
-	glColor3d(1.0, 0.0, 0.0);
-	glVertex3d(5.5, 0.0, 0.0);
-	// Axa Y 
-	glColor3d(0.0, 0.0, 0.0);
-	glVertex3d(0.0, -5.5, 0.0);
-	glColor3d(0.0, 1.0, 0.0);
-	glVertex3d(0.0, 5.5, 0.0);
-	// Axa Z 
-	glColor3d(0.0, 0.0, 0.0);
-	glVertex3d(0.0, 0.0, -5.5);
-	glColor3d(0.0, 0.0, 1.0);
-	glVertex3d(0.0, 0.0, 5.5);
-	glEnd();
-
-	// Con X 
-	glColor3d(1.0, 0.0, 0.0);
-	glPushMatrix();
-	glTranslated(5.3f, 0.0f, 0.0f);
-	glRotated(90.0, 0.0f, 1.0f, 0.0f);
-	auxSolidCone(0.1f, 0.2f);
-	glPopMatrix();
-
-	// Con Y 
-	glColor3d(0.0, 1.0, 0.0);
-	glPushMatrix();
-	glTranslated(0.0f, 5.3f, 0.0f);
-	glRotated(-90.0, 1.0f, 0.0f, 0.0f);
-	auxSolidCone(0.1f, 0.2f);
-	glPopMatrix();
-
-	// Con Z 
-	glColor3d(0.0, 0.0, 1.0);
-	glPushMatrix();
-	glTranslated(0.0f, 0.0f, 5.3f);
-	auxSolidCone(0.1f, 0.2f);
-	glPopMatrix();
+	gAxes.draw();
 
 	//VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV 
 	// TODO: add draw code for native data here  
