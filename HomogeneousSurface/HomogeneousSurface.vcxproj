@@ -148,7 +148,7 @@
     <ClInclude Include="Vec3.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="..\..\..\..\Downloads\background_lion.bmp">
+    <CopyFileToFolders Include="..\assets\background_lion.bmp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
     </CopyFileToFolders>

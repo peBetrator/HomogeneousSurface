@@ -58,7 +58,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="..\..\..\..\Downloads\background_lion.bmp">
+    <CopyFileToFolders Include="..\assets\background_lion.bmp">
       <Filter>Resource Files</Filter>
     </CopyFileToFolders>
   </ItemGroup>
