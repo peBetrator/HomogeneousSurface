@@ -8,12 +8,14 @@
 #pragma comment(lib,"Glaux.lib") 
 
 #include "CoordinateAxes.hpp"
+#include "Background.hpp"
 
 #include "LineSegmentCone.hpp"
 #include "CircleCone.hpp"
 #include "ParabolaCone.hpp"
 
 static CoordinateAxes gAxes;
+static Background gBackground;
 
 static LineSegmentCone gLineCone(12, 8, 3.0f); // levels, segments, depth
 static CircleCone gCircle(12, 8, 3.0f);
@@ -25,6 +27,10 @@ void initScene() {
 	gAxes.setLineWidth(1.5f);
 	gAxes.setShowOriginPoint(true);
 	gAxes.setLineSmooth(true);
+
+	if (!gBackground.loadFromExeDir("background_lion.bmp")) {
+		MessageBoxA(nullptr, "Can't load background_lion.bmp", "Warning", MB_OK | MB_ICONWARNING);
+	}
 
 	gLineCone.build();
 
@@ -59,6 +65,8 @@ void CALLBACK display(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//   glClear(GL_COLOR_BUFFER_BIT); 
 	//   glClear(GL_DEPTH_BUFFER_BIT); 
+
+	gBackground.draw();
 
 	glPushMatrix();
 	glTranslated(0.0, 0.0, -6.0);

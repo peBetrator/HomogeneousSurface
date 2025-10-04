@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Background.cpp" />
     <ClCompile Include="CircleCone.cpp" />
     <ClCompile Include="CoordinateAxes.cpp" />
     <ClCompile Include="LineSegmentCone.cpp" />
@@ -138,6 +139,7 @@
     <ClCompile Include="Project0.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Background.hpp" />
     <ClInclude Include="CircleCone.hpp" />
     <ClInclude Include="CoordinateAxes.hpp" />
     <ClInclude Include="ISurface3D.hpp" />
