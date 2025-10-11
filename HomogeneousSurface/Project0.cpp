@@ -34,6 +34,7 @@ void initScene() {
 
 	gLineCone.build();
     gLineCone.setWireframe(true);
+    gLineCone.loadTextures("wood.bmp", "asphalt.bmp");
 
 	gCircle.build();
     gCircle.setWireframe(true);
@@ -140,6 +141,9 @@ int main()
 
     glShadeModel(GL_SMOOTH);           // Gouraud
     glEnable(GL_NORMALIZE);            // корректные нормали при масштабах
+
+    glDisable(GL_CULL_FACE);                          // рисуем обе стороны
+    glShadeModel(GL_SMOOTH);
 
     glClearColor(1.f, 1.f, 1.f, 1.f);  // фон окна (на случай, если нет фоновой текстуры)
 

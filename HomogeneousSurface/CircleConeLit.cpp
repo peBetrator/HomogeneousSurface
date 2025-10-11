@@ -73,26 +73,44 @@ void CircleConeLit::draw() const {
     const auto& V = vertices();
     const auto& I = indices();
 
-    // --- включаем освещение ---
+    // ---- сохранить состояния ----
     GLboolean wasLighting = glIsEnabled(GL_LIGHTING);
-    if (!wasLighting) glEnable(GL_LIGHTING);
-
-    // полезно, чтобы масштабирование не портило нормали
     GLboolean wasNormalize = glIsEnabled(GL_NORMALIZE);
+    GLboolean wasCull = glIsEnabled(GL_CULL_FACE);
+    GLboolean wasTex2D = glIsEnabled(GL_TEXTURE_2D);
+    GLboolean wasColorMat = glIsEnabled(GL_COLOR_MATERIAL);
+    GLint     twoSideBefore = 0; glGetIntegerv(GL_LIGHT_MODEL_TWO_SIDE, &twoSideBefore);
+
+    // ---- безопасные состояния для заливки ----
+    if (!wasLighting)  glEnable(GL_LIGHTING);
     if (!wasNormalize) glEnable(GL_NORMALIZE);
+    if (wasCull)       glDisable(GL_CULL_FACE);
+    if (wasTex2D)      glDisable(GL_TEXTURE_2D);
+    if (wasColorMat)   glDisable(GL_COLOR_MATERIAL);
+    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    // материал можно через glColorMaterial (у тебя уже включено в main),
-    // но на всякий случай зададим базовый спекуляр
-    GLfloat spec[4] = { 0.25f, 0.25f, 0.25f, 1.f };
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, spec);
-    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 32.f);
-
-    // полупрозрачная заливка
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glColor4f(0.25f, 0.25f, 0.7f, 0.6f);
 
-    // ——— заполнение треугольниками с пер-вершинными нормалями ———
+    // Материал FRONT (синий) / BACK (оранжевый)
+    const GLfloat frontAmb[4] = { 0.08f, 0.10f, 0.20f, 1.0f };
+    const GLfloat frontDif[4] = { 0.25f, 0.35f, 0.85f, 0.75f };
+    const GLfloat frontSpc[4] = { 0.25f, 0.25f, 0.25f, 0.75f };
+    glMaterialfv(GL_FRONT, GL_AMBIENT, frontAmb);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, frontDif);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, frontSpc);
+    glMaterialf(GL_FRONT, GL_SHININESS, 32.f);
+
+    const GLfloat backAmb[4] = { 0.20f, 0.12f, 0.04f, 1.0f };
+    const GLfloat backDif[4] = { 0.90f, 0.55f, 0.20f, 0.75f };
+    const GLfloat backSpc[4] = { 0.20f, 0.20f, 0.20f, 0.75f };
+    glMaterialfv(GL_BACK, GL_AMBIENT, backAmb);
+    glMaterialfv(GL_BACK, GL_DIFFUSE, backDif);
+    glMaterialfv(GL_BACK, GL_SPECULAR, backSpc);
+    glMaterialf(GL_BACK, GL_SHININESS, 18.f);
+
+    // ---- заливка треугольниками с нормалями ----
     glBegin(GL_TRIANGLES);
     for (size_t k = 0; k + 2 < I.size(); k += 3) {
         unsigned ia = I[k + 0], ib = I[k + 1], ic = I[k + 2];
@@ -108,14 +126,14 @@ void CircleConeLit::draw() const {
     }
     glEnd();
 
-    // ——— опциональный каркас по тем же треугольникам ———
+    // --- опциональный каркас ---
     if (mWireframe) {
         glEnable(GL_POLYGON_OFFSET_LINE);
         glPolygonOffset(-1.f, -1.f);
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
         glLineWidth(1.0f);
-        glColor4f(0.05f, 0.05f, 0.2f, 0.9f);
+        glColor4f(0.05f, 0.05f, 0.2f, 0.95f);
 
         glBegin(GL_TRIANGLES);
         for (size_t k = 0; k + 2 < I.size(); k += 3) {
@@ -130,7 +148,11 @@ void CircleConeLit::draw() const {
         glDisable(GL_POLYGON_OFFSET_LINE);
     }
 
-    // ——— восстановление состояний ———
+    // ---- восстановить состояния ----
+    if (!twoSideBefore) glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
+    if (wasTex2D)      glEnable(GL_TEXTURE_2D);
+    if (wasColorMat)   glEnable(GL_COLOR_MATERIAL);
+    if (wasCull)       glEnable(GL_CULL_FACE);
     if (!wasNormalize) glDisable(GL_NORMALIZE);
     if (!wasLighting)  glDisable(GL_LIGHTING);
 }

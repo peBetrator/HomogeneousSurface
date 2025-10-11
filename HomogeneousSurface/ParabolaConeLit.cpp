@@ -68,23 +68,49 @@ void ParabolaConeLit::draw() const {
     const auto& V = vertices();
     const auto& I = indices();
 
-    // включаем освещение и нормализацию (на случай масштабов)
+    // ---- сохранить состояния ----
     GLboolean wasLighting = glIsEnabled(GL_LIGHTING);
     GLboolean wasNormalize = glIsEnabled(GL_NORMALIZE);
+    GLboolean wasCull = glIsEnabled(GL_CULL_FACE);
+    GLboolean wasColorMat = glIsEnabled(GL_COLOR_MATERIAL);
+    GLboolean wasTex2D = glIsEnabled(GL_TEXTURE_2D);
+    GLint     twoSideBefore = 0; glGetIntegerv(GL_LIGHT_MODEL_TWO_SIDE, &twoSideBefore);
+
+    // ---- корректные состояния для заливки ----
     if (!wasLighting)  glEnable(GL_LIGHTING);
     if (!wasNormalize) glEnable(GL_NORMALIZE);
+    if (wasCull)       glDisable(GL_CULL_FACE);
+    if (wasColorMat)   glDisable(GL_COLOR_MATERIAL); // чтобы glColor не сбивал материал
+    if (wasTex2D)      glDisable(GL_TEXTURE_2D);     // вдруг текстура фона осталась
+    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 
+    // Гарантируем FILL перед заливкой (на случай, если где-то остался GL_LINE)
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+    // Прозрачность (можно начать с 1.0, чтобы проверить, видно ли заливку)
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    // материал (спекуляр слегка) — цвет берётся из glColor при включённом GL_COLOR_MATERIAL
-    GLfloat spec[4] = { 0.25f, 0.2f, 0.2f, 1.f };
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, spec);
-    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 28.f);
+    // ---- ДВУСТОРОННИЙ МАТЕРИАЛ: FRONT=фиолетовый, BACK=зелёный ----
+    // FRONT (фиолетовый)
+    const GLfloat frontAmb[4] = { 0.10f, 0.06f, 0.14f, 0.85f };
+    const GLfloat frontDif[4] = { 0.60f, 0.25f, 0.80f, 0.85f };
+    const GLfloat frontSpc[4] = { 0.30f, 0.25f, 0.35f, 0.85f };
+    glMaterialfv(GL_FRONT, GL_AMBIENT, frontAmb);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, frontDif);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, frontSpc);
+    glMaterialf(GL_FRONT, GL_SHININESS, 32.f);
 
-    glColor4f(0.7f, 0.25f, 0.25f, 0.6f);
+    // BACK (зелёный)
+    const GLfloat backAmb[4] = { 0.06f, 0.10f, 0.06f, 0.85f };
+    const GLfloat backDif[4] = { 0.25f, 0.80f, 0.35f, 0.85f };
+    const GLfloat backSpc[4] = { 0.20f, 0.30f, 0.20f, 0.85f };
+    glMaterialfv(GL_BACK, GL_AMBIENT, backAmb);
+    glMaterialfv(GL_BACK, GL_DIFFUSE, backDif);
+    glMaterialfv(GL_BACK, GL_SPECULAR, backSpc);
+    glMaterialf(GL_BACK, GL_SHININESS, 18.f);
 
-    // ——— заливка треугольниками с пер-вершинными нормалями ———
+    // ---- ЗАЛИВКА ПОЛИГОНАМИ С НОРМАЛЯМИ ----
     glBegin(GL_TRIANGLES);
     for (size_t k = 0; k + 2 < I.size(); k += 3) {
         unsigned ia = I[k + 0], ib = I[k + 1], ic = I[k + 2];
@@ -100,14 +126,19 @@ void ParabolaConeLit::draw() const {
     }
     glEnd();
 
-    // ——— опциональный каркас поверх ———
+    // ---- КАРКАС (опционально) ----
     if (mWireframe) {
         glEnable(GL_POLYGON_OFFSET_LINE);
         glPolygonOffset(-1.f, -1.f);
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
         glLineWidth(1.0f);
-        glColor4f(0.15f, 0.05f, 0.05f, 0.95f);
+
+        // Включим ColorMaterial ТОЛЬКО для каркаса, либо
+        // можно оставить материал тот же; здесь покажу через цвет:
+        glEnable(GL_COLOR_MATERIAL);
+        glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+        glColor4f(0.05f, 0.05f, 0.05f, 1.0f);
 
         glBegin(GL_TRIANGLES);
         for (size_t k = 0; k + 2 < I.size(); k += 3) {
@@ -118,11 +149,16 @@ void ParabolaConeLit::draw() const {
         }
         glEnd();
 
+        glDisable(GL_COLOR_MATERIAL); // вернули как было
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         glDisable(GL_POLYGON_OFFSET_LINE);
     }
 
-    // восстановление состояний
+    // ---- восстановить состояния ----
+    if (wasTex2D)      glEnable(GL_TEXTURE_2D);
+    if (wasColorMat)   glEnable(GL_COLOR_MATERIAL);
+    if (!twoSideBefore) glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
+    if (wasCull)       glEnable(GL_CULL_FACE);
     if (!wasNormalize) glDisable(GL_NORMALIZE);
     if (!wasLighting)  glDisable(GL_LIGHTING);
 }

@@ -15,6 +15,10 @@ public:
     void build() override;
     void draw()  const override;
 
+    int   levels()   const { return mLevels; }
+    int   segments() const { return mSegments; }
+    float depth()    const { return mDepth; }
+
     const std::vector<Vec3>& vertices() const override { return mVerts; }
     const std::vector<unsigned>& indices()  const override { return mIdx; }
 
