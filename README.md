@@ -2,6 +2,8 @@
 
 Учебный проект на C++ / Visual Studio с использованием старых OpenGL + GLAUX библиотек.
 
+![DEMO](assets/preview.png)
+
 ## Требования
 - Visual Studio 2019 или новее
 - Windows SDK (устанавливается вместе с Visual Studio)
@@ -14,18 +16,15 @@
 - `.sln` и `.vcxproj` — файлы проекта Visual Studio
 
 ## Сборка и запуск
-1. Клонируй репозиторий:
-   ```bash
-   git clone https://github.com/<your-username>/<repo-name>.git
-2. Открой .sln в Visual Studio.
-В меню сверху выбери:
+1. Открой .sln в Visual Studio.
+В меню:
 
 - Configuration: Debug (или Release)
 
 - Platform: `x86` (Win32)
 ⚠️ glaux не поддерживается под x64, поэтому проект нужно собирать под 32-бита.
 
-4. Убедись, что пути настроены:
+2. Убедись, что пути настроены:
 
 - Project → Properties → C/C++ → General → Additional Include Directories: $(SolutionDir)include
 

@@ -21,6 +21,16 @@ static LineSegmentConeLit gLineCone(12, 8, 3.0f); // levels, segments, depth
 static CircleConeLit gCircle(12, 24, 3.0f);
 static ParabolaConeLit gParabola(12, 8, 3.0f);
 
+// ---- анимация вращения сцены ----
+static bool   gSpinEnabled = true;     // включить/выключить авто-вращение
+static float  gYawDeg = -35.0f;   // поворот вокруг Y (горизонт)
+static float  gPitchDeg = 35.0f;    // поворот вокруг X (наклон)
+static float  gYawSpeedDps = 20.0f;    // скорость по Y, градусов в секунду
+static DWORD  gLastTick = 0;        // для дельта-времени
+static float gKeyYawSpeedDps = 90.0f;   // скорость поворота по Y от стрелок
+static float gKeyPitchSpeedDps = 90.0f;   // скорость поворота по X от стрелок
+static float gCamDist = 6.0f;    // дистанция "камеры" (Translate z)
+
 void initScene() {
 	gAxes.setLength(5.5f);
 	gAxes.setArrow(0.1f, 0.2f);
@@ -41,6 +51,8 @@ void initScene() {
 
 	gParabola.build();
     gParabola.setWireframe(true);
+
+    gLastTick = GetTickCount();
 }
 
 void CALLBACK resize(int width, int height)
@@ -66,51 +78,83 @@ void CALLBACK resize(int width, int height)
 
 void CALLBACK display(void)
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//   glClear(GL_COLOR_BUFFER_BIT); 
-	//   glClear(GL_DEPTH_BUFFER_BIT); 
+    // очистка
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	gBackground.draw();
+    // --- 1) фон (в экранных координатах, сам чинит свои стейты) ---
+    gBackground.draw();
 
-	glPushMatrix();
-	glTranslated(0.0, 0.0, -6.0);
-	glRotated(35.0, 1.0, 0.0, 0.0);
-	glRotated(-35.0, 0.0, 1.0, 0.0);
+    // --- 2) тайминг / анимация ---
+    DWORD now = GetTickCount();
+    float dt = (now - gLastTick) * 0.001f; // сек
+    gLastTick = now;
 
-    // === Позиции источников света (устанавливаются каждый кадр) ===
-    GLfloat pos0[4] = { 3.f,  3.f,  3.f, 1.f }; // точечный источник справа сверху спереди
-    GLfloat pos1[4] = { -3.f,  3.f, -3.f, 1.f }; // слева сверху сзади
-    GLfloat pos2[4] = { 0.f, -3.f,  3.f, 1.f }; // снизу спереди
+    if (gSpinEnabled) {
+        gYawDeg += gYawSpeedDps * dt;
+        if (gYawDeg > 360.f)  gYawDeg -= 360.f;
+        if (gYawDeg < -360.f) gYawDeg += 360.f;
+    }
 
-    glLightfv(GL_LIGHT0, GL_POSITION, pos0);
-    glLightfv(GL_LIGHT1, GL_POSITION, pos1);
-    glLightfv(GL_LIGHT2, GL_POSITION, pos2);
+    // --- 3) обработка клавиш (стрелки, PgUp/PgDn, Space, R) ---
+    // Yaw (влево/вправо)
+    if (GetAsyncKeyState(VK_LEFT) & 0x8000) gYawDeg -= gKeyYawSpeedDps * dt;
+    if (GetAsyncKeyState(VK_RIGHT) & 0x8000) gYawDeg += gKeyYawSpeedDps * dt;
+    // Pitch (вверх/вниз)
+    if (GetAsyncKeyState(VK_UP) & 0x8000) gPitchDeg -= gKeyPitchSpeedDps * dt;
+    if (GetAsyncKeyState(VK_DOWN) & 0x8000) gPitchDeg += gKeyPitchSpeedDps * dt;
+    if (gPitchDeg > 89.f) gPitchDeg = 89.f;
+    if (gPitchDeg < -89.f) gPitchDeg = -89.f;
+    // Зум (PgUp / PgDn)
+    if (GetAsyncKeyState(VK_PRIOR) & 0x8000) gCamDist -= 3.0f * dt; // PgUp
+    if (GetAsyncKeyState(VK_NEXT) & 0x8000) gCamDist += 3.0f * dt; // PgDn
+    if (gCamDist < 2.5f) gCamDist = 2.5f;
+    if (gCamDist > 12.f) gCamDist = 12.f;
+    // Пауза автоворота
+    if (GetAsyncKeyState(VK_SPACE) & 0x0001) gSpinEnabled = !gSpinEnabled;
+    // Сброс ориентации
+    if (GetAsyncKeyState('R') & 0x0001) { gYawDeg = -35.f; gPitchDeg = 35.f; }
 
-    // Можно также задать цвет/интенсивность:
-    GLfloat diffuse0[4] = { 1.f, 0.9f, 0.9f, 1.f };
-    GLfloat diffuse1[4] = { 0.9f, 1.f, 0.9f, 1.f };
-    GLfloat diffuse2[4] = { 0.9f, 0.9f, 1.f, 1.f };
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse0);
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse1);
-    glLightfv(GL_LIGHT2, GL_DIFFUSE, diffuse2);
+    // --- 4) 3D-сцена ---
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
 
-	gAxes.draw();
+    // камера с учётом зума
+    glTranslated(0.0, 0.0, -gCamDist);
 
-	//VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV 
-	// TODO: add draw code for native data here  
-	// to learn OpenGL functions 
-	gLineCone.draw();
-	gCircle.draw();
-	gParabola.draw();
-	glFlush();
+    // вращение всей сцены
+    glRotatef(gPitchDeg, 1.0f, 0.0f, 0.0f);
+    glRotatef(gYawDeg, 0.0f, 1.0f, 0.0f);
 
+    // позиции источников света (после установки MODELVIEW!)
+    {
+        GLfloat pos0[4] = { 3.f,  3.f,  3.f, 1.f };
+        GLfloat pos1[4] = { -3.f,  3.f, -3.f, 1.f };
+        GLfloat pos2[4] = { 0.f, -3.f,  3.f, 1.f };
+        glLightfv(GL_LIGHT0, GL_POSITION, pos0);
+        glLightfv(GL_LIGHT1, GL_POSITION, pos1);
+        glLightfv(GL_LIGHT2, GL_POSITION, pos2);
+    }
 
-	//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 
+    // ключевые состояния на всякий случай (фон мог менять)
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_LIGHTING);
+    glShadeModel(GL_SMOOTH);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-	glPopMatrix();
+    // рисуем оси и фигуры
+    gAxes.draw();
+    gLineCone.draw();
+    gCircle.draw();
+    gParabola.draw();
 
-	auxSwapBuffers();
+    glFlush();
+    glPopMatrix();
+
+    // двойная буферизация
+    auxSwapBuffers();
 }
+
 
 int main()
 {

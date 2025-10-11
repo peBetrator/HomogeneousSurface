@@ -94,17 +94,17 @@ void CircleConeLit::draw() const {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // Материал FRONT (синий) / BACK (оранжевый)
-    const GLfloat frontAmb[4] = { 0.08f, 0.10f, 0.20f, 1.0f };
-    const GLfloat frontDif[4] = { 0.25f, 0.35f, 0.85f, 0.75f };
-    const GLfloat frontSpc[4] = { 0.25f, 0.25f, 0.25f, 0.75f };
+    const GLfloat frontAmb[4] = { 0.05f, 0.07f, 0.15f, 1.0f };
+    const GLfloat frontDif[4] = { 0.25f, 0.35f, 0.90f, 0.85f }; // синий
+    const GLfloat frontSpc[4] = { 0.30f, 0.30f, 0.30f, 0.85f };
     glMaterialfv(GL_FRONT, GL_AMBIENT, frontAmb);
     glMaterialfv(GL_FRONT, GL_DIFFUSE, frontDif);
     glMaterialfv(GL_FRONT, GL_SPECULAR, frontSpc);
     glMaterialf(GL_FRONT, GL_SHININESS, 32.f);
 
-    const GLfloat backAmb[4] = { 0.20f, 0.12f, 0.04f, 1.0f };
-    const GLfloat backDif[4] = { 0.90f, 0.55f, 0.20f, 0.75f };
-    const GLfloat backSpc[4] = { 0.20f, 0.20f, 0.20f, 0.75f };
+    const GLfloat backAmb[4] = { 0.15f, 0.05f, 0.05f, 1.0f };
+    const GLfloat backDif[4] = { 0.90f, 0.25f, 0.25f, 0.85f }; // красный
+    const GLfloat backSpc[4] = { 0.30f, 0.20f, 0.20f, 0.85f };
     glMaterialfv(GL_BACK, GL_AMBIENT, backAmb);
     glMaterialfv(GL_BACK, GL_DIFFUSE, backDif);
     glMaterialfv(GL_BACK, GL_SPECULAR, backSpc);
@@ -133,7 +133,7 @@ void CircleConeLit::draw() const {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
         glLineWidth(1.0f);
-        glColor4f(0.05f, 0.05f, 0.2f, 0.95f);
+        glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
 
         glBegin(GL_TRIANGLES);
         for (size_t k = 0; k + 2 < I.size(); k += 3) {
