@@ -1,11 +1,11 @@
 #include "ParabolaCone.hpp"
 #include <cmath>
 
-#ifdef __APPLE__
-#include <OpenGL/gl.h>
-#else
-#include <GL/gl.h>
+#ifdef _WIN32
+#define NOMINMAX
+#include <windows.h>
 #endif
+#include <GL/gl.h>
 
 namespace {
     inline float root2() { return std::sqrt(2.0f); }

@@ -1,67 +1,53 @@
 #include "LineSegmentConeLit.hpp"
 #include <algorithm>
 #include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-
-#ifdef __APPLE__
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#else
-#include <GL/gl.h>
-#include <GL/glu.h>
-#endif
 
 #ifdef _WIN32
 #define NOMINMAX
 #include <windows.h>
-#else
-#include <stdint.h>
-// BMP file structures for non-Windows platforms
-#pragma pack(push, 1)
-typedef struct {
-    uint16_t bfType;
-    uint32_t bfSize;
-    uint16_t bfReserved1;
-    uint16_t bfReserved2;
-    uint32_t bfOffBits;
-} BITMAPFILEHEADER;
-
-typedef struct {
-    uint32_t biSize;
-    int32_t  biWidth;
-    int32_t  biHeight;
-    uint16_t biPlanes;
-    uint16_t biBitCount;
-    uint32_t biCompression;
-    uint32_t biSizeImage;
-    int32_t  biXPelsPerMeter;
-    int32_t  biYPelsPerMeter;
-    uint32_t biClrUsed;
-    uint32_t biClrImportant;
-} BITMAPINFOHEADER;
-#pragma pack(pop)
-
-#define BI_RGB 0
 #endif
+#include <GL/gl.h>
+#include "GL/glaux.h"
+#pragma comment(lib,"Glaux.lib")
 
 #include <vector>
 #include <string>
+#include <shlwapi.h>
+#pragma comment(lib,"Shlwapi.lib")
 
-// Simple replacement for AUX_RGBImageRec
-struct AUX_RGBImageRec {
-    int sizeX;
-    int sizeY;
-    unsigned char* data;
-};
 
-// Загрузить BMP файл (24/32-bit BI_RGB)
-static AUX_RGBImageRec* LoadBMP_Robust(const char* filename) {
-    if (!filename) return nullptr;
+static std::string exeDirA() {
+    char buf[MAX_PATH] = { 0 };
+    DWORD n = GetModuleFileNameA(nullptr, buf, MAX_PATH);
+    if (n == 0 || n >= MAX_PATH) return std::string(".");
+    PathRemoveFileSpecA(buf);
+    return std::string(buf);
+}
+static std::string joinPathA(const std::string& dir, const char* file) {
+    char full[MAX_PATH] = { 0 };
+    lstrcpynA(full, dir.c_str(), MAX_PATH);
+    PathAppendA(full, file);
+    return std::string(full);
+}
 
-    FILE* fp = fopen(filename, "rb");
-    if (!fp) return nullptr;
+// Попытка 1: glaux; Попытка 2: свой парсер 24/32-bit BI_RGB (с разворотом Y, BGR->RGB)
+static AUX_RGBImageRec* LoadBMP_Robust(const char* filenameRelToExe) {
+    if (!filenameRelToExe) return nullptr;
+    std::string full = joinPathA(exeDirA(), filenameRelToExe);
+
+    // 1) glaux
+    {
+        FILE* f = nullptr;
+        if (fopen_s(&f, full.c_str(), "rb") == 0 && f) {
+            fclose(f);
+            if (AUX_RGBImageRec* img = auxDIBImageLoadA(full.c_str()))
+                return img;
+        }
+    }
+
+    // 2) свой
+    FILE* fp = nullptr;
+    if (fopen_s(&fp, full.c_str(), "rb") != 0 || !fp) return nullptr;
 
     BITMAPFILEHEADER bfh;
     BITMAPINFOHEADER bih;
@@ -183,7 +169,8 @@ void LineSegmentConeLit::buildUVs() {
 bool LineSegmentConeLit::createTextureFromBMP(const char* filenameRelToExe, unsigned& texOut) {
     AUX_RGBImageRec* img = LoadBMP_Robust(filenameRelToExe);
     if (!img) {
-        fprintf(stderr, "Error: Can't load BMP: %s\n", filenameRelToExe);
+        MessageBoxA(nullptr, (std::string("Can't load BMP: ") + filenameRelToExe).c_str(),
+            "Error", MB_OK | MB_ICONERROR);
         return false;
     }
 

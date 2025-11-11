@@ -1,3 +1,8 @@
+#ifdef _WIN32#include "CoordinateAxes.hpp"
+#define NOMINMAX
+#include <windows.h>
+#endif
+
 #include "CoordinateAxes.hpp"
 
 void CoordinateAxes::draw() const
@@ -52,11 +57,7 @@ void CoordinateAxes::drawArrowAlongX(GLfloat x, GLfloat radius, GLfloat height)
     glPushMatrix();
     glTranslatef(x, 0.f, 0.f);
     glRotatef(90.f, 0.f, 1.f, 0.f); // вдоль +X
-
-    GLUquadric* quad = gluNewQuadric();
-    gluCylinder(quad, radius, 0.0, height, 12, 1);
-    gluDeleteQuadric(quad);
-
+    auxSolidCone(radius, height);
     glPopMatrix();
 }
 
@@ -65,11 +66,7 @@ void CoordinateAxes::drawArrowAlongY(GLfloat y, GLfloat radius, GLfloat height)
     glPushMatrix();
     glTranslatef(0.f, y, 0.f);
     glRotatef(-90.f, 1.f, 0.f, 0.f); // вдоль +Y
-
-    GLUquadric* quad = gluNewQuadric();
-    gluCylinder(quad, radius, 0.0, height, 12, 1);
-    gluDeleteQuadric(quad);
-
+    auxSolidCone(radius, height);
     glPopMatrix();
 }
 
@@ -77,10 +74,6 @@ void CoordinateAxes::drawArrowAlongZ(GLfloat z, GLfloat radius, GLfloat height)
 {
     glPushMatrix();
     glTranslatef(0.f, 0.f, z);       // вдоль +Z (без поворота)
-
-    GLUquadric* quad = gluNewQuadric();
-    gluCylinder(quad, radius, 0.0, height, 12, 1);
-    gluDeleteQuadric(quad);
-
+    auxSolidCone(radius, height);
     glPopMatrix();
 }
