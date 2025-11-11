@@ -8,6 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/AstroidCone.cpp" "CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/AstroidCone.cpp.o" "gcc" "CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/AstroidCone.cpp.o.d"
+  "/Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/AstroidConeLit.cpp" "CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/AstroidConeLit.cpp.o" "gcc" "CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/AstroidConeLit.cpp.o.d"
   "/Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/Background.cpp" "CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/Background.cpp.o" "gcc" "CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/Background.cpp.o.d"
   "/Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/CircleCone.cpp" "CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CircleCone.cpp.o" "gcc" "CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CircleCone.cpp.o.d"
   "/Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/CircleConeLit.cpp" "CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CircleConeLit.cpp.o" "gcc" "CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CircleConeLit.cpp.o.d"

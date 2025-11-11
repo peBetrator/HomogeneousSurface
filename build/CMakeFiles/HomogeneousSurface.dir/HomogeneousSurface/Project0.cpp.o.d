@@ -799,10 +799,6 @@ CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/Project0.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers/glu.h \
   /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/CoordinateAxes.hpp \
   /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/Background.hpp \
-  /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/LineSegmentConeLit.hpp \
-  /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/LineSegmentCone.hpp \
-  /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/ISurface3D.hpp \
-  /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/CircleConeLit.hpp \
-  /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/CircleCone.hpp \
-  /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/ParabolaConeLit.hpp \
-  /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/ParabolaCone.hpp
+  /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/AstroidConeLit.hpp \
+  /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/AstroidCone.hpp \
+  /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/ISurface3D.hpp

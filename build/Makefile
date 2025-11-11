@@ -129,6 +129,54 @@ HomogeneousSurface/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/build
 .PHONY : HomogeneousSurface/fast
 
+HomogeneousSurface/AstroidCone.o: HomogeneousSurface/AstroidCone.cpp.o
+.PHONY : HomogeneousSurface/AstroidCone.o
+
+# target to build an object file
+HomogeneousSurface/AstroidCone.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/AstroidCone.cpp.o
+.PHONY : HomogeneousSurface/AstroidCone.cpp.o
+
+HomogeneousSurface/AstroidCone.i: HomogeneousSurface/AstroidCone.cpp.i
+.PHONY : HomogeneousSurface/AstroidCone.i
+
+# target to preprocess a source file
+HomogeneousSurface/AstroidCone.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/AstroidCone.cpp.i
+.PHONY : HomogeneousSurface/AstroidCone.cpp.i
+
+HomogeneousSurface/AstroidCone.s: HomogeneousSurface/AstroidCone.cpp.s
+.PHONY : HomogeneousSurface/AstroidCone.s
+
+# target to generate assembly for a file
+HomogeneousSurface/AstroidCone.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/AstroidCone.cpp.s
+.PHONY : HomogeneousSurface/AstroidCone.cpp.s
+
+HomogeneousSurface/AstroidConeLit.o: HomogeneousSurface/AstroidConeLit.cpp.o
+.PHONY : HomogeneousSurface/AstroidConeLit.o
+
+# target to build an object file
+HomogeneousSurface/AstroidConeLit.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/AstroidConeLit.cpp.o
+.PHONY : HomogeneousSurface/AstroidConeLit.cpp.o
+
+HomogeneousSurface/AstroidConeLit.i: HomogeneousSurface/AstroidConeLit.cpp.i
+.PHONY : HomogeneousSurface/AstroidConeLit.i
+
+# target to preprocess a source file
+HomogeneousSurface/AstroidConeLit.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/AstroidConeLit.cpp.i
+.PHONY : HomogeneousSurface/AstroidConeLit.cpp.i
+
+HomogeneousSurface/AstroidConeLit.s: HomogeneousSurface/AstroidConeLit.cpp.s
+.PHONY : HomogeneousSurface/AstroidConeLit.s
+
+# target to generate assembly for a file
+HomogeneousSurface/AstroidConeLit.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/AstroidConeLit.cpp.s
+.PHONY : HomogeneousSurface/AstroidConeLit.cpp.s
+
 HomogeneousSurface/Background.o: HomogeneousSurface/Background.cpp.o
 .PHONY : HomogeneousSurface/Background.o
 
@@ -354,6 +402,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... HomogeneousSurface"
+	@echo "... HomogeneousSurface/AstroidCone.o"
+	@echo "... HomogeneousSurface/AstroidCone.i"
+	@echo "... HomogeneousSurface/AstroidCone.s"
+	@echo "... HomogeneousSurface/AstroidConeLit.o"
+	@echo "... HomogeneousSurface/AstroidConeLit.i"
+	@echo "... HomogeneousSurface/AstroidConeLit.s"
 	@echo "... HomogeneousSurface/Background.o"
 	@echo "... HomogeneousSurface/Background.i"
 	@echo "... HomogeneousSurface/Background.s"

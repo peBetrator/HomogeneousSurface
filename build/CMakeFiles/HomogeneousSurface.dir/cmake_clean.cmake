@@ -1,4 +1,8 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/AstroidCone.cpp.o"
+  "CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/AstroidCone.cpp.o.d"
+  "CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/AstroidConeLit.cpp.o"
+  "CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/AstroidConeLit.cpp.o.d"
   "CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/Background.cpp.o"
   "CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/Background.cpp.o.d"
   "CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CircleCone.cpp.o"
