@@ -31,6 +31,22 @@ static float gKeyYawSpeedDps = 90.0f;   // скорость поворота п�
 static float gKeyPitchSpeedDps = 90.0f;   // скорость поворота по X от стрелок
 static float gCamDist = 6.0f;    // дистанция "камеры" (Translate z)
 
+static float gZoom = 1.0f;      // 1.0 — без зума, >1 — отдаление, <1 — приближение
+static int   gWinW = 500, gWinH = 500; // запомним размер окна
+
+static void applyProjection()
+{
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    // уменьшаем/увеличиваем объём видимости по XY пропорционально gZoom
+    const float base = 6.2f;
+    const float s = gZoom; // zoom scale
+    glOrtho(-base / s, base / s, -base / s, base / s, 2.0, 12.0);
+
+    glMatrixMode(GL_MODELVIEW);
+}
+
 void initScene() {
 	gAxes.setLength(5.5f);
 	gAxes.setArrow(0.1f, 0.2f);
@@ -74,6 +90,8 @@ void CALLBACK resize(int width, int height)
 	//   glFrustum(-5.0, 5.0, -5.0, 5.0, 2.0, 12.0);  
 
 	glMatrixMode(GL_MODELVIEW);
+
+    applyProjection(); // проекция теперь зависит от gZoom
 }
 
 void CALLBACK display(void)
@@ -104,13 +122,20 @@ void CALLBACK display(void)
     if (GetAsyncKeyState(VK_DOWN) & 0x8000) gPitchDeg += gKeyPitchSpeedDps * dt;
     if (gPitchDeg > 89.f) gPitchDeg = 89.f;
     if (gPitchDeg < -89.f) gPitchDeg = -89.f;
-    // Зум ( + / - )
-    if (GetAsyncKeyState(VK_OEM_PLUS) & 0x8000 || GetAsyncKeyState(VK_ADD) & 0x8000)
-        gCamDist -= 3.0f * dt; // приблизить
-    if (GetAsyncKeyState(VK_OEM_MINUS) & 0x8000 || GetAsyncKeyState(VK_SUBTRACT) & 0x8000)
-        gCamDist += 3.0f * dt; // отдалить
-    if (gCamDist < 2.5f) gCamDist = 2.5f;
-    if (gCamDist > 12.f) gCamDist = 12.f;
+    // Зум ( + / - ) : VK_OEM_PLUS/ADD и VK_OEM_MINUS/SUBTRACT
+    bool plusDown = (GetAsyncKeyState(VK_OEM_PLUS) & 0x8000) || (GetAsyncKeyState(VK_ADD) & 0x8000);
+    bool minusDown = (GetAsyncKeyState(VK_OEM_MINUS) & 0x8000) || (GetAsyncKeyState(VK_SUBTRACT) & 0x8000);
+
+    // экспоненциальный, плавный зум: 5% в сек/клавиша
+    if (plusDown)  gZoom *= (1.0f + 0.05f * dt * 60.0f / 60.0f);   // приблизить (меньше фрустум)
+    if (minusDown) gZoom /= (1.0f + 0.05f * dt * 60.0f / 60.0f);   // отдалить  (больше фрустум)
+
+    // ограничения
+    if (gZoom < 0.3f) gZoom = 0.3f;
+    if (gZoom > 4.0f) gZoom = 4.0f;
+
+    // применим проекцию с новым зумом (фон уже отрисован и восстановил матрицы)
+    applyProjection();
     // Пауза автоворота
     if (GetAsyncKeyState(VK_SPACE) & 0x0001) gSpinEnabled = !gSpinEnabled;
     // Сброс ориентации
