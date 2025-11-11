@@ -12,17 +12,13 @@
 
 #include "CoordinateAxes.hpp"
 #include "Background.hpp"
-
-#include "LineSegmentConeLit.hpp"
-#include "CircleConeLit.hpp"
-#include "ParabolaConeLit.hpp"
+#include "AstroidConeLit.hpp"
 
 static CoordinateAxes gAxes;
 static Background gBackground;
 
-static LineSegmentConeLit gLineCone(12, 8, 3.0f); // levels, segments, depth
-static CircleConeLit gCircle(12, 24, 3.0f);
-static ParabolaConeLit gParabola(12, 8, 3.0f);
+// Одна красивая астроида!
+static AstroidConeLit gAstroid(12, 64, 3.0f); // levels, segments, depth
 
 // ---- анимация вращения сцены ----
 static GLFWwindow* gWindow = nullptr;
@@ -46,15 +42,9 @@ void initScene() {
 		std::cerr << "Warning: Can't load assets/background_lion.bmp" << std::endl;
 	}
 
-	gLineCone.build();
-    gLineCone.setWireframe(true);
-    gLineCone.loadTextures("assets/wood.bmp", "assets/asphalt.bmp");
-
-	gCircle.build();
-    gCircle.setWireframe(true);
-
-	gParabola.build();
-    gParabola.setWireframe(true);
+	// Построить астроиду
+	gAstroid.build();
+	gAstroid.setWireframe(true); // С каркасом видно структуру
 
     gLastTime = glfwGetTime();
 }
@@ -142,11 +132,9 @@ void display(void)
     glShadeModel(GL_SMOOTH);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    // рисуем оси и фигуры
+    // рисуем оси и астроиду
     gAxes.draw();
-    gLineCone.draw();
-    gCircle.draw();
-    gParabola.draw();
+    gAstroid.draw();
 
     glFlush();
     glPopMatrix();

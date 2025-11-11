@@ -23,6 +23,8 @@ set(SOURCES
     HomogeneousSurface/LineSegmentCone.cpp
     HomogeneousSurface/CircleCone.cpp
     HomogeneousSurface/ParabolaCone.cpp
+    HomogeneousSurface/AstroidCone.cpp
+    HomogeneousSurface/AstroidConeLit.cpp
 )
 
 # Header files
@@ -35,6 +37,8 @@ set(HEADERS
     HomogeneousSurface/LineSegmentCone.hpp
     HomogeneousSurface/CircleCone.hpp
     HomogeneousSurface/ParabolaCone.hpp
+    HomogeneousSurface/AstroidCone.hpp
+    HomogeneousSurface/AstroidConeLit.hpp
     HomogeneousSurface/ISurface3D.hpp
 )
 
