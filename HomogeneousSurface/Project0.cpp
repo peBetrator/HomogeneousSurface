@@ -104,9 +104,11 @@ void CALLBACK display(void)
     if (GetAsyncKeyState(VK_DOWN) & 0x8000) gPitchDeg += gKeyPitchSpeedDps * dt;
     if (gPitchDeg > 89.f) gPitchDeg = 89.f;
     if (gPitchDeg < -89.f) gPitchDeg = -89.f;
-    // Зум (PgUp / PgDn)
-    if (GetAsyncKeyState(VK_PRIOR) & 0x8000) gCamDist -= 3.0f * dt; // PgUp
-    if (GetAsyncKeyState(VK_NEXT) & 0x8000) gCamDist += 3.0f * dt; // PgDn
+    // Зум ( + / - )
+    if (GetAsyncKeyState(VK_OEM_PLUS) & 0x8000 || GetAsyncKeyState(VK_ADD) & 0x8000)
+        gCamDist -= 3.0f * dt; // приблизить
+    if (GetAsyncKeyState(VK_OEM_MINUS) & 0x8000 || GetAsyncKeyState(VK_SUBTRACT) & 0x8000)
+        gCamDist += 3.0f * dt; // отдалить
     if (gCamDist < 2.5f) gCamDist = 2.5f;
     if (gCamDist > 12.f) gCamDist = 12.f;
     // Пауза автоворота
@@ -144,9 +146,41 @@ void CALLBACK display(void)
 
     // рисуем оси и фигуры
     gAxes.draw();
-    gLineCone.draw();
-    gCircle.draw();
-    gParabola.draw();
+    //gLineCone.draw();
+    //gCircle.draw();
+    //gParabola.draw();
+
+    const GLdouble v[27][3] = {
+    {-5,-5, 5}, {0,-5, 5}, { 5,-5, 5},
+    {-5,-5, 0}, {0,-5, 0}, { 5,-5, 0},
+    {-5,-5,-5}, {0,-5,-5}, { 5,-5,-5},
+
+    {-5, 0, 5}, {0, 0, 5}, { 5, 0, 5},
+    {-5, 0, 0}, {0, 0, 0}, { 5, 0, 0},
+    {-5, 0,-5}, {0, 0,-5}, { 5, 0,-5},
+
+    {-5, 5, 5}, {0, 5, 5}, { 5, 5, 5},
+    {-5, 5, 0}, {0, 5, 0}, { 5, 5, 0},
+    {-5, 5,-5}, {0, 5,-5}, { 5, 5,-5}
+    };
+
+    glColor3f(0.2f, 0.2f, 0.8f);
+
+    // Прямоугольник на z = -5 двумя треугольниками (strip)
+    glBegin(GL_TRIANGLE_STRIP);
+    glVertex3dv(v[24]);  glVertex3dv(v[6]);
+    glVertex3dv(v[26]);  glVertex3dv(v[8]);
+    glEnd();
+
+    // Четыре треугольника — «клин» от v10(0,0,5) к углам прямоугольника
+    glBegin(GL_TRIANGLES);
+    glVertex3dv(v[10]); glVertex3dv(v[26]); glVertex3dv(v[24]);
+    glVertex3dv(v[10]); glVertex3dv(v[8]);  glVertex3dv(v[26]);
+    glVertex3dv(v[10]); glVertex3dv(v[24]); glVertex3dv(v[6]);
+    glVertex3dv(v[10]); glVertex3dv(v[6]);  glVertex3dv(v[8]);
+    glEnd();
+
+    glEnable(GL_LIGHTING);
 
     glFlush();
     glPopMatrix();
