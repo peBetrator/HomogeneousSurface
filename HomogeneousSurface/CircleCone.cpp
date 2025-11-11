@@ -1,11 +1,11 @@
 #include "CircleCone.hpp"
 #include <cmath>
 
-#ifdef __APPLE__
-#include <OpenGL/gl.h>
-#else
-#include <GL/gl.h>
+#ifdef _WIN32
+#define NOMINMAX
+#include <windows.h>
 #endif
+#include <GL/gl.h>
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846

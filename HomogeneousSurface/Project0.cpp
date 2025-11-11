@@ -1,32 +1,32 @@
-#include <GLFW/glfw3.h>
-#include <iostream>
-#include <cmath>
-
-#ifdef __APPLE__
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#else
-#include <GL/gl.h>
-#include <GL/glu.h>
-#endif 
+#include <windows.h> 
+#include <GL/gl.h> 
+#pragma comment(lib,"OpenGL32.lib") 
+#include <GL/glu.h> 
+#pragma comment(lib,"Glu32.lib") 
+#pragma comment (lib, "legacy_stdio_definitions.lib") 
+#include "GL/glaux.h" 
+#pragma comment(lib,"Glaux.lib") 
 
 #include "CoordinateAxes.hpp"
 #include "Background.hpp"
-#include "AstroidConeLit.hpp"
+
+#include "LineSegmentConeLit.hpp"
+#include "CircleConeLit.hpp"
+#include "ParabolaConeLit.hpp"
 
 static CoordinateAxes gAxes;
 static Background gBackground;
 
-// Одна красивая астроида!
-static AstroidConeLit gAstroid(12, 64, 3.0f); // levels, segments, depth
+static LineSegmentConeLit gLineCone(12, 8, 3.0f); // levels, segments, depth
+static CircleConeLit gCircle(12, 24, 3.0f);
+static ParabolaConeLit gParabola(12, 8, 3.0f);
 
 // ---- анимация вращения сцены ----
-static GLFWwindow* gWindow = nullptr;
 static bool   gSpinEnabled = true;     // включить/выключить авто-вращение
 static float  gYawDeg = -35.0f;   // поворот вокруг Y (горизонт)
 static float  gPitchDeg = 35.0f;    // поворот вокруг X (наклон)
 static float  gYawSpeedDps = 20.0f;    // скорость по Y, градусов в секунду
-static double gLastTime = 0.0;        // для дельта-времени
+static DWORD  gLastTick = 0;        // для дельта-времени
 static float gKeyYawSpeedDps = 90.0f;   // скорость поворота по Y от стрелок
 static float gKeyPitchSpeedDps = 90.0f;   // скорость поворота по X от стрелок
 static float gCamDist = 6.0f;    // дистанция "камеры" (Translate z)
@@ -38,18 +38,24 @@ void initScene() {
 	gAxes.setShowOriginPoint(true);
 	gAxes.setLineSmooth(true);
 
-	if (!gBackground.loadFromExeDir("assets/background_lion.bmp")) {
-		std::cerr << "Warning: Can't load assets/background_lion.bmp" << std::endl;
+	if (!gBackground.loadFromExeDir("background_lion.bmp")) {
+		MessageBoxA(nullptr, "Can't load background_lion.bmp", "Warning", MB_OK | MB_ICONWARNING);
 	}
 
-	// Построить астроиду
-	gAstroid.build();
-	gAstroid.setWireframe(true); // С каркасом видно структуру
+	gLineCone.build();
+    gLineCone.setWireframe(true);
+    gLineCone.loadTextures("wood.bmp", "asphalt.bmp");
 
-    gLastTime = glfwGetTime();
+	gCircle.build();
+    gCircle.setWireframe(true);
+
+	gParabola.build();
+    gParabola.setWireframe(true);
+
+    gLastTick = GetTickCount();
 }
 
-void resize(int width, int height)
+void CALLBACK resize(int width, int height)
 {
 	// Здесь указывается часть окна в пределах которой 
 	// будут рисовать функции OpenGL. 
@@ -70,7 +76,7 @@ void resize(int width, int height)
 	glMatrixMode(GL_MODELVIEW);
 }
 
-void display(void)
+void CALLBACK display(void)
 {
     // очистка
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -79,9 +85,9 @@ void display(void)
     gBackground.draw();
 
     // --- 2) тайминг / анимация ---
-    double now = glfwGetTime();
-    float dt = (float)(now - gLastTime); // сек
-    gLastTime = now;
+    DWORD now = GetTickCount();
+    float dt = (now - gLastTick) * 0.001f; // сек
+    gLastTick = now;
 
     if (gSpinEnabled) {
         gYawDeg += gYawSpeedDps * dt;
@@ -91,18 +97,22 @@ void display(void)
 
     // --- 3) обработка клавиш (стрелки, PgUp/PgDn, Space, R) ---
     // Yaw (влево/вправо)
-    if (glfwGetKey(gWindow, GLFW_KEY_LEFT) == GLFW_PRESS) gYawDeg -= gKeyYawSpeedDps * dt;
-    if (glfwGetKey(gWindow, GLFW_KEY_RIGHT) == GLFW_PRESS) gYawDeg += gKeyYawSpeedDps * dt;
+    if (GetAsyncKeyState(VK_LEFT) & 0x8000) gYawDeg -= gKeyYawSpeedDps * dt;
+    if (GetAsyncKeyState(VK_RIGHT) & 0x8000) gYawDeg += gKeyYawSpeedDps * dt;
     // Pitch (вверх/вниз)
-    if (glfwGetKey(gWindow, GLFW_KEY_UP) == GLFW_PRESS) gPitchDeg -= gKeyPitchSpeedDps * dt;
-    if (glfwGetKey(gWindow, GLFW_KEY_DOWN) == GLFW_PRESS) gPitchDeg += gKeyPitchSpeedDps * dt;
+    if (GetAsyncKeyState(VK_UP) & 0x8000) gPitchDeg -= gKeyPitchSpeedDps * dt;
+    if (GetAsyncKeyState(VK_DOWN) & 0x8000) gPitchDeg += gKeyPitchSpeedDps * dt;
     if (gPitchDeg > 89.f) gPitchDeg = 89.f;
     if (gPitchDeg < -89.f) gPitchDeg = -89.f;
     // Зум (PgUp / PgDn)
-    if (glfwGetKey(gWindow, GLFW_KEY_PAGE_UP) == GLFW_PRESS) gCamDist -= 3.0f * dt; // PgUp
-    if (glfwGetKey(gWindow, GLFW_KEY_PAGE_DOWN) == GLFW_PRESS) gCamDist += 3.0f * dt; // PgDn
+    if (GetAsyncKeyState(VK_PRIOR) & 0x8000) gCamDist -= 3.0f * dt; // PgUp
+    if (GetAsyncKeyState(VK_NEXT) & 0x8000) gCamDist += 3.0f * dt; // PgDn
     if (gCamDist < 2.5f) gCamDist = 2.5f;
     if (gCamDist > 12.f) gCamDist = 12.f;
+    // Пауза автоворота
+    if (GetAsyncKeyState(VK_SPACE) & 0x0001) gSpinEnabled = !gSpinEnabled;
+    // Сброс ориентации
+    if (GetAsyncKeyState('R') & 0x0001) { gYawDeg = -35.f; gPitchDeg = 35.f; }
 
     // --- 4) 3D-сцена ---
     glMatrixMode(GL_MODELVIEW);
@@ -132,72 +142,37 @@ void display(void)
     glShadeModel(GL_SMOOTH);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    // рисуем оси и астроиду
+    // рисуем оси и фигуры
     gAxes.draw();
-    gAstroid.draw();
+    gLineCone.draw();
+    gCircle.draw();
+    gParabola.draw();
 
     glFlush();
     glPopMatrix();
+
+    // двойная буферизация
+    auxSwapBuffers();
 }
 
-// Callback для обработки нажатий клавиш (Space и R)
-static bool gSpaceWasPressed = false;
-static bool gRWasPressed = false;
-
-void processKeyCallbacks() {
-    // Обработка Space (toggle spin)
-    bool spacePressed = (glfwGetKey(gWindow, GLFW_KEY_SPACE) == GLFW_PRESS);
-    if (spacePressed && !gSpaceWasPressed) {
-        gSpinEnabled = !gSpinEnabled;
-    }
-    gSpaceWasPressed = spacePressed;
-
-    // Обработка R (reset orientation)
-    bool rPressed = (glfwGetKey(gWindow, GLFW_KEY_R) == GLFW_PRESS);
-    if (rPressed && !gRWasPressed) {
-        gYawDeg = -35.f;
-        gPitchDeg = 35.f;
-    }
-    gRWasPressed = rPressed;
-}
-
-
-// Callback для изменения размера окна
-void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-    resize(width, height);
-}
 
 int main()
 {
-    // Инициализация GLFW
-    if (!glfwInit()) {
-        std::cerr << "Failed to initialize GLFW" << std::endl;
-        return -1;
-    }
+    // Окно 500x500 в левом верхнем углу
+    auxInitPosition(0, 0, 500, 500);
 
-    // Настройка GLFW
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-    glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
+    // Контекст: RGB + Z-буфер + двойная буферизация
+    auxInitDisplayMode(AUX_RGB | AUX_DEPTH | AUX_DOUBLE);
 
-    // Создание окна 500x500
-    gWindow = glfwCreateWindow(500, 500, "OpenGL - Homogeneous Surface", nullptr, nullptr);
-    if (!gWindow) {
-        std::cerr << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-
-    glfwMakeContextCurrent(gWindow);
-    glfwSetFramebufferSizeCallback(gWindow, framebuffer_size_callback);
-
-    // Инициализация размера viewport
-    int width, height;
-    glfwGetFramebufferSize(gWindow, &width, &height);
-    resize(width, height);
+    // Создать окно
+    auxInitWindow(L"OpenGL");
 
     // Инициализация сцены (фон, оси, геометрия и т.д.)
     initScene();
+
+    // Коллбэки
+    auxIdleFunc(display);
+    auxReshapeFunc(resize);
 
     // Глобальные GL-состояния
     glEnable(GL_DEPTH_TEST);           // Z-тест
@@ -211,7 +186,8 @@ int main()
     glShadeModel(GL_SMOOTH);           // Gouraud
     glEnable(GL_NORMALIZE);            // корректные нормали при масштабах
 
-    glDisable(GL_CULL_FACE);           // рисуем обе стороны
+    glDisable(GL_CULL_FACE);                          // рисуем обе стороны
+    glShadeModel(GL_SMOOTH);
 
     glClearColor(1.f, 1.f, 1.f, 1.f);  // фон окна (на случай, если нет фоновой текстуры)
 
@@ -255,21 +231,6 @@ int main()
     }
 
     // Главный цикл
-    while (!glfwWindowShouldClose(gWindow)) {
-        // Обработка событий
-        glfwPollEvents();
-
-        // Обработка клавиш Space и R
-        processKeyCallbacks();
-
-        // Отрисовка
-        display();
-
-        // Swap buffers
-        glfwSwapBuffers(gWindow);
-    }
-
-    glfwDestroyWindow(gWindow);
-    glfwTerminate();
+    auxMainLoop(display);
     return 0;
 }

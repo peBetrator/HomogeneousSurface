@@ -1,46 +1,40 @@
 #include "Background.hpp"
+#include <shlwapi.h>
 #include <vector>
 #include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
+#pragma comment(lib,"Shlwapi.lib")
 
-#ifdef _WIN32
-#include <windows.h>
-#else
-#include <stdint.h>
-// BMP file structures for non-Windows platforms
-#pragma pack(push, 1)
-typedef struct {
-    uint16_t bfType;
-    uint32_t bfSize;
-    uint16_t bfReserved1;
-    uint16_t bfReserved2;
-    uint32_t bfOffBits;
-} BITMAPFILEHEADER;
+static AUX_RGBImageRec* tryGlauxLoad(const char* fullPath) {
+    FILE* f = nullptr;
+    if (fopen_s(&f, fullPath, "rb") != 0 || !f) return nullptr;
+    fclose(f);
+    return auxDIBImageLoadA(fullPath);
+}
 
-typedef struct {
-    uint32_t biSize;
-    int32_t  biWidth;
-    int32_t  biHeight;
-    uint16_t biPlanes;
-    uint16_t biBitCount;
-    uint32_t biCompression;
-    uint32_t biSizeImage;
-    int32_t  biXPelsPerMeter;
-    int32_t  biYPelsPerMeter;
-    uint32_t biClrUsed;
-    uint32_t biClrImportant;
-} BITMAPINFOHEADER;
-#pragma pack(pop)
+// -------- path helpers --------
+std::string Background::exeDirA() {
+    char buf[MAX_PATH];
+    DWORD n = GetModuleFileNameA(nullptr, buf, MAX_PATH);
+    buf[(n < MAX_PATH) ? n : (MAX_PATH - 1)] = '\0';
+    PathRemoveFileSpecA(buf);
+    return std::string(buf);
+}
 
-#define BI_RGB 0
-#endif
+std::string Background::joinPathA(const std::string& dir, const char* file) {
+    char full[MAX_PATH];
+    lstrcpynA(full, dir.c_str(), MAX_PATH);
+    PathAppendA(full, file);
+    return std::string(full);
+}
 
 // -------- robust BMP loader (24/32-bit BI_RGB) --------
-RGBImageRec* Background::loadBMP(const char* filename) {
-    FILE* fp = fopen(filename, "rb");
-    if (!fp) return nullptr;
+AUX_RGBImageRec* Background::loadBMPRobust(const char* filenameRelToExe) {
+    std::string full = joinPathA(exeDirA(), filenameRelToExe);
+
+    if (auto* img = tryGlauxLoad(full.c_str())) return img;
+
+    FILE* fp = nullptr;
+    if (fopen_s(&fp, full.c_str(), "rb") != 0 || !fp) return nullptr;
 
     BITMAPFILEHEADER bfh{};
     BITMAPINFOHEADER bih{};
@@ -88,7 +82,7 @@ RGBImageRec* Background::loadBMP(const char* filename) {
         for (int y = 0; y < height; ++y) copyRow(y, y);
     }
 
-    auto* img = (RGBImageRec*)malloc(sizeof(RGBImageRec));
+    auto* img = (AUX_RGBImageRec*)malloc(sizeof(AUX_RGBImageRec));
     img->sizeX = width;
     img->sizeY = height;
     img->data = rgb;
@@ -99,10 +93,10 @@ RGBImageRec* Background::loadBMP(const char* filename) {
 Background::Background() : mTex(0), mLoaded(false) {}
 Background::~Background() { release(); }
 
-bool Background::loadFromPath(const char* relativePath) {
+bool Background::loadFromExeDir(const char* relativePath) {
     release();
 
-    RGBImageRec* img = loadBMP(relativePath);
+    AUX_RGBImageRec* img = loadBMPRobust(relativePath);
     if (!img) return false;
 
     if (!mTex) glGenTextures(1, &mTex);

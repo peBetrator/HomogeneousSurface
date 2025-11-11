@@ -1,9 +1,9 @@
 #include "LineSegmentCone.hpp"
-#ifdef __APPLE__
-#include <OpenGL/gl.h>
-#else
-#include <GL/gl.h>
+#ifdef _WIN32
+#define NOMINMAX
+#include <windows.h>
 #endif
+#include <GL/gl.h>
 
 LineSegmentCone::LineSegmentCone(int levels, int segments, float depth)
     : mLevels(levels), mSegments(segments), mDepth(depth) {
