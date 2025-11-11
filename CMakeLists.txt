@@ -17,14 +17,6 @@ set(SOURCES
     HomogeneousSurface/Project0.cpp
     HomogeneousSurface/Background.cpp
     HomogeneousSurface/CoordinateAxes.cpp
-    HomogeneousSurface/LineSegmentConeLit.cpp
-    HomogeneousSurface/CircleConeLit.cpp
-    HomogeneousSurface/ParabolaConeLit.cpp
-    HomogeneousSurface/LineSegmentCone.cpp
-    HomogeneousSurface/CircleCone.cpp
-    HomogeneousSurface/ParabolaCone.cpp
-    HomogeneousSurface/AstroidCone.cpp
-    HomogeneousSurface/AstroidConeLit.cpp
     HomogeneousSurface/CustomRegionCone.cpp
     HomogeneousSurface/CustomRegionConeLit.cpp
 )
@@ -33,14 +25,6 @@ set(SOURCES
 set(HEADERS
     HomogeneousSurface/Background.hpp
     HomogeneousSurface/CoordinateAxes.hpp
-    HomogeneousSurface/LineSegmentConeLit.hpp
-    HomogeneousSurface/CircleConeLit.hpp
-    HomogeneousSurface/ParabolaConeLit.hpp
-    HomogeneousSurface/LineSegmentCone.hpp
-    HomogeneousSurface/CircleCone.hpp
-    HomogeneousSurface/ParabolaCone.hpp
-    HomogeneousSurface/AstroidCone.hpp
-    HomogeneousSurface/AstroidConeLit.hpp
     HomogeneousSurface/CustomRegionCone.hpp
     HomogeneousSurface/CustomRegionConeLit.hpp
     HomogeneousSurface/ISurface3D.hpp

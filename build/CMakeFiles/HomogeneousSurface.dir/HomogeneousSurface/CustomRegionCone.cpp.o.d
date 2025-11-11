@@ -1,6 +1,6 @@
-CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CircleCone.cpp.o: \
-  /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/CircleCone.cpp \
-  /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/CircleCone.hpp \
+CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionCone.cpp.o: \
+  /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/CustomRegionCone.cpp \
+  /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/CustomRegionCone.hpp \
   /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/ISurface3D.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/vector \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config \

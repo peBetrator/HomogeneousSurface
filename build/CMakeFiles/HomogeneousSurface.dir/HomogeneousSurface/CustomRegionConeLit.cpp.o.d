@@ -1,7 +1,7 @@
-CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/AstroidConeLit.cpp.o: \
-  /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/AstroidConeLit.cpp \
-  /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/AstroidConeLit.hpp \
-  /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/AstroidCone.hpp \
+CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionConeLit.cpp.o: \
+  /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/CustomRegionConeLit.cpp \
+  /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/CustomRegionConeLit.hpp \
+  /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/CustomRegionCone.hpp \
   /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/ISurface3D.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/vector \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config \
