@@ -799,6 +799,6 @@ CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/Project0.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers/glu.h \
   /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/CoordinateAxes.hpp \
   /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/Background.hpp \
-  /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/AstroidConeLit.hpp \
-  /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/AstroidCone.hpp \
+  /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/CustomRegionConeLit.hpp \
+  /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/CustomRegionCone.hpp \
   /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/ISurface3D.hpp

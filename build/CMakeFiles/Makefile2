@@ -85,12 +85,12 @@ clean: CMakeFiles/HomogeneousSurface.dir/clean
 CMakeFiles/HomogeneousSurface.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/daniilgutu/CLionProjects/HomogeneousSurface/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12 "Built target HomogeneousSurface"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/daniilgutu/CLionProjects/HomogeneousSurface/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14 "Built target HomogeneousSurface"
 .PHONY : CMakeFiles/HomogeneousSurface.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/HomogeneousSurface.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/daniilgutu/CLionProjects/HomogeneousSurface/build/CMakeFiles 12
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/daniilgutu/CLionProjects/HomogeneousSurface/build/CMakeFiles 14
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/HomogeneousSurface.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/daniilgutu/CLionProjects/HomogeneousSurface/build/CMakeFiles 0
 .PHONY : CMakeFiles/HomogeneousSurface.dir/rule
@@ -102,7 +102,7 @@ HomogeneousSurface: CMakeFiles/HomogeneousSurface.dir/rule
 # codegen rule for target.
 CMakeFiles/HomogeneousSurface.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/daniilgutu/CLionProjects/HomogeneousSurface/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12 "Finished codegen for target HomogeneousSurface"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/daniilgutu/CLionProjects/HomogeneousSurface/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14 "Finished codegen for target HomogeneousSurface"
 .PHONY : CMakeFiles/HomogeneousSurface.dir/codegen
 
 # clean rule for target.

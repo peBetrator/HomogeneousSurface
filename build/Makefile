@@ -273,6 +273,54 @@ HomogeneousSurface/CoordinateAxes.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CoordinateAxes.cpp.s
 .PHONY : HomogeneousSurface/CoordinateAxes.cpp.s
 
+HomogeneousSurface/CustomRegionCone.o: HomogeneousSurface/CustomRegionCone.cpp.o
+.PHONY : HomogeneousSurface/CustomRegionCone.o
+
+# target to build an object file
+HomogeneousSurface/CustomRegionCone.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionCone.cpp.o
+.PHONY : HomogeneousSurface/CustomRegionCone.cpp.o
+
+HomogeneousSurface/CustomRegionCone.i: HomogeneousSurface/CustomRegionCone.cpp.i
+.PHONY : HomogeneousSurface/CustomRegionCone.i
+
+# target to preprocess a source file
+HomogeneousSurface/CustomRegionCone.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionCone.cpp.i
+.PHONY : HomogeneousSurface/CustomRegionCone.cpp.i
+
+HomogeneousSurface/CustomRegionCone.s: HomogeneousSurface/CustomRegionCone.cpp.s
+.PHONY : HomogeneousSurface/CustomRegionCone.s
+
+# target to generate assembly for a file
+HomogeneousSurface/CustomRegionCone.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionCone.cpp.s
+.PHONY : HomogeneousSurface/CustomRegionCone.cpp.s
+
+HomogeneousSurface/CustomRegionConeLit.o: HomogeneousSurface/CustomRegionConeLit.cpp.o
+.PHONY : HomogeneousSurface/CustomRegionConeLit.o
+
+# target to build an object file
+HomogeneousSurface/CustomRegionConeLit.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionConeLit.cpp.o
+.PHONY : HomogeneousSurface/CustomRegionConeLit.cpp.o
+
+HomogeneousSurface/CustomRegionConeLit.i: HomogeneousSurface/CustomRegionConeLit.cpp.i
+.PHONY : HomogeneousSurface/CustomRegionConeLit.i
+
+# target to preprocess a source file
+HomogeneousSurface/CustomRegionConeLit.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionConeLit.cpp.i
+.PHONY : HomogeneousSurface/CustomRegionConeLit.cpp.i
+
+HomogeneousSurface/CustomRegionConeLit.s: HomogeneousSurface/CustomRegionConeLit.cpp.s
+.PHONY : HomogeneousSurface/CustomRegionConeLit.s
+
+# target to generate assembly for a file
+HomogeneousSurface/CustomRegionConeLit.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionConeLit.cpp.s
+.PHONY : HomogeneousSurface/CustomRegionConeLit.cpp.s
+
 HomogeneousSurface/LineSegmentCone.o: HomogeneousSurface/LineSegmentCone.cpp.o
 .PHONY : HomogeneousSurface/LineSegmentCone.o
 
@@ -420,6 +468,12 @@ help:
 	@echo "... HomogeneousSurface/CoordinateAxes.o"
 	@echo "... HomogeneousSurface/CoordinateAxes.i"
 	@echo "... HomogeneousSurface/CoordinateAxes.s"
+	@echo "... HomogeneousSurface/CustomRegionCone.o"
+	@echo "... HomogeneousSurface/CustomRegionCone.i"
+	@echo "... HomogeneousSurface/CustomRegionCone.s"
+	@echo "... HomogeneousSurface/CustomRegionConeLit.o"
+	@echo "... HomogeneousSurface/CustomRegionConeLit.i"
+	@echo "... HomogeneousSurface/CustomRegionConeLit.s"
 	@echo "... HomogeneousSurface/LineSegmentCone.o"
 	@echo "... HomogeneousSurface/LineSegmentCone.i"
 	@echo "... HomogeneousSurface/LineSegmentCone.s"

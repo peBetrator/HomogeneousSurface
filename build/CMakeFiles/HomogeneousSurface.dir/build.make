@@ -226,6 +226,34 @@ CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/AstroidConeLit.cpp.s: cmake
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/AstroidConeLit.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/AstroidConeLit.cpp -o CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/AstroidConeLit.cpp.s
 
+CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionCone.cpp.o: CMakeFiles/HomogeneousSurface.dir/flags.make
+CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionCone.cpp.o: /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/CustomRegionCone.cpp
+CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionCone.cpp.o: CMakeFiles/HomogeneousSurface.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/daniilgutu/CLionProjects/HomogeneousSurface/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionCone.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionCone.cpp.o -MF CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionCone.cpp.o.d -o CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionCone.cpp.o -c /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/CustomRegionCone.cpp
+
+CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionCone.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionCone.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/CustomRegionCone.cpp > CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionCone.cpp.i
+
+CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionCone.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionCone.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/CustomRegionCone.cpp -o CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionCone.cpp.s
+
+CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionConeLit.cpp.o: CMakeFiles/HomogeneousSurface.dir/flags.make
+CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionConeLit.cpp.o: /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/CustomRegionConeLit.cpp
+CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionConeLit.cpp.o: CMakeFiles/HomogeneousSurface.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/daniilgutu/CLionProjects/HomogeneousSurface/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionConeLit.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionConeLit.cpp.o -MF CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionConeLit.cpp.o.d -o CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionConeLit.cpp.o -c /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/CustomRegionConeLit.cpp
+
+CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionConeLit.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionConeLit.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/CustomRegionConeLit.cpp > CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionConeLit.cpp.i
+
+CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionConeLit.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionConeLit.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/daniilgutu/CLionProjects/HomogeneousSurface/HomogeneousSurface/CustomRegionConeLit.cpp -o CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionConeLit.cpp.s
+
 # Object files for target HomogeneousSurface
 HomogeneousSurface_OBJECTS = \
 "CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/Project0.cpp.o" \
@@ -238,7 +266,9 @@ HomogeneousSurface_OBJECTS = \
 "CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CircleCone.cpp.o" \
 "CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/ParabolaCone.cpp.o" \
 "CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/AstroidCone.cpp.o" \
-"CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/AstroidConeLit.cpp.o"
+"CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/AstroidConeLit.cpp.o" \
+"CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionCone.cpp.o" \
+"CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionConeLit.cpp.o"
 
 # External object files for target HomogeneousSurface
 HomogeneousSurface_EXTERNAL_OBJECTS =
@@ -254,13 +284,15 @@ HomogeneousSurface: CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CircleC
 HomogeneousSurface: CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/ParabolaCone.cpp.o
 HomogeneousSurface: CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/AstroidCone.cpp.o
 HomogeneousSurface: CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/AstroidConeLit.cpp.o
+HomogeneousSurface: CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionCone.cpp.o
+HomogeneousSurface: CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CustomRegionConeLit.cpp.o
 HomogeneousSurface: CMakeFiles/HomogeneousSurface.dir/build.make
 HomogeneousSurface: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework
 HomogeneousSurface: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework
 HomogeneousSurface: /opt/homebrew/lib/libglfw.3.4.dylib
 HomogeneousSurface: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework
 HomogeneousSurface: CMakeFiles/HomogeneousSurface.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/daniilgutu/CLionProjects/HomogeneousSurface/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Linking CXX executable HomogeneousSurface"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/daniilgutu/CLionProjects/HomogeneousSurface/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Linking CXX executable HomogeneousSurface"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/HomogeneousSurface.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

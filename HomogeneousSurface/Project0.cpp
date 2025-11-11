@@ -12,13 +12,13 @@
 
 #include "CoordinateAxes.hpp"
 #include "Background.hpp"
-#include "AstroidConeLit.hpp"
+#include "CustomRegionConeLit.hpp"
 
 static CoordinateAxes gAxes;
 static Background gBackground;
 
-// Одна красивая астроида!
-static AstroidConeLit gAstroid(12, 64, 3.0f); // levels, segments, depth
+// Фигура по неравенствам: |x|>1, |y|>1, |x|+|y|<3
+static CustomRegionConeLit gCustomRegion(12, 16, 3.0f); // levels, segmentsPerSide, depth
 
 // ---- анимация вращения сцены ----
 static GLFWwindow* gWindow = nullptr;
@@ -42,9 +42,9 @@ void initScene() {
 		std::cerr << "Warning: Can't load assets/background_lion.bmp" << std::endl;
 	}
 
-	// Построить астроиду
-	gAstroid.build();
-	gAstroid.setWireframe(true); // С каркасом видно структуру
+	// Построить фигуру
+	gCustomRegion.build();
+	gCustomRegion.setWireframe(true); // С каркасом видно структуру
 
     gLastTime = glfwGetTime();
 }
@@ -132,9 +132,9 @@ void display(void)
     glShadeModel(GL_SMOOTH);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    // рисуем оси и астроиду
+    // рисуем оси и фигуру
     gAxes.draw();
-    gAstroid.draw();
+    gCustomRegion.draw();
 
     glFlush();
     glPopMatrix();
