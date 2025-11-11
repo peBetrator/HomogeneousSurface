@@ -201,54 +201,6 @@ HomogeneousSurface/Background.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/Background.cpp.s
 .PHONY : HomogeneousSurface/Background.cpp.s
 
-HomogeneousSurface/CircleCone.o: HomogeneousSurface/CircleCone.cpp.o
-.PHONY : HomogeneousSurface/CircleCone.o
-
-# target to build an object file
-HomogeneousSurface/CircleCone.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CircleCone.cpp.o
-.PHONY : HomogeneousSurface/CircleCone.cpp.o
-
-HomogeneousSurface/CircleCone.i: HomogeneousSurface/CircleCone.cpp.i
-.PHONY : HomogeneousSurface/CircleCone.i
-
-# target to preprocess a source file
-HomogeneousSurface/CircleCone.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CircleCone.cpp.i
-.PHONY : HomogeneousSurface/CircleCone.cpp.i
-
-HomogeneousSurface/CircleCone.s: HomogeneousSurface/CircleCone.cpp.s
-.PHONY : HomogeneousSurface/CircleCone.s
-
-# target to generate assembly for a file
-HomogeneousSurface/CircleCone.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CircleCone.cpp.s
-.PHONY : HomogeneousSurface/CircleCone.cpp.s
-
-HomogeneousSurface/CircleConeLit.o: HomogeneousSurface/CircleConeLit.cpp.o
-.PHONY : HomogeneousSurface/CircleConeLit.o
-
-# target to build an object file
-HomogeneousSurface/CircleConeLit.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CircleConeLit.cpp.o
-.PHONY : HomogeneousSurface/CircleConeLit.cpp.o
-
-HomogeneousSurface/CircleConeLit.i: HomogeneousSurface/CircleConeLit.cpp.i
-.PHONY : HomogeneousSurface/CircleConeLit.i
-
-# target to preprocess a source file
-HomogeneousSurface/CircleConeLit.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CircleConeLit.cpp.i
-.PHONY : HomogeneousSurface/CircleConeLit.cpp.i
-
-HomogeneousSurface/CircleConeLit.s: HomogeneousSurface/CircleConeLit.cpp.s
-.PHONY : HomogeneousSurface/CircleConeLit.s
-
-# target to generate assembly for a file
-HomogeneousSurface/CircleConeLit.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CircleConeLit.cpp.s
-.PHONY : HomogeneousSurface/CircleConeLit.cpp.s
-
 HomogeneousSurface/CoordinateAxes.o: HomogeneousSurface/CoordinateAxes.cpp.o
 .PHONY : HomogeneousSurface/CoordinateAxes.o
 
@@ -272,102 +224,6 @@ HomogeneousSurface/CoordinateAxes.s: HomogeneousSurface/CoordinateAxes.cpp.s
 HomogeneousSurface/CoordinateAxes.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/CoordinateAxes.cpp.s
 .PHONY : HomogeneousSurface/CoordinateAxes.cpp.s
-
-HomogeneousSurface/LineSegmentCone.o: HomogeneousSurface/LineSegmentCone.cpp.o
-.PHONY : HomogeneousSurface/LineSegmentCone.o
-
-# target to build an object file
-HomogeneousSurface/LineSegmentCone.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/LineSegmentCone.cpp.o
-.PHONY : HomogeneousSurface/LineSegmentCone.cpp.o
-
-HomogeneousSurface/LineSegmentCone.i: HomogeneousSurface/LineSegmentCone.cpp.i
-.PHONY : HomogeneousSurface/LineSegmentCone.i
-
-# target to preprocess a source file
-HomogeneousSurface/LineSegmentCone.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/LineSegmentCone.cpp.i
-.PHONY : HomogeneousSurface/LineSegmentCone.cpp.i
-
-HomogeneousSurface/LineSegmentCone.s: HomogeneousSurface/LineSegmentCone.cpp.s
-.PHONY : HomogeneousSurface/LineSegmentCone.s
-
-# target to generate assembly for a file
-HomogeneousSurface/LineSegmentCone.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/LineSegmentCone.cpp.s
-.PHONY : HomogeneousSurface/LineSegmentCone.cpp.s
-
-HomogeneousSurface/LineSegmentConeLit.o: HomogeneousSurface/LineSegmentConeLit.cpp.o
-.PHONY : HomogeneousSurface/LineSegmentConeLit.o
-
-# target to build an object file
-HomogeneousSurface/LineSegmentConeLit.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/LineSegmentConeLit.cpp.o
-.PHONY : HomogeneousSurface/LineSegmentConeLit.cpp.o
-
-HomogeneousSurface/LineSegmentConeLit.i: HomogeneousSurface/LineSegmentConeLit.cpp.i
-.PHONY : HomogeneousSurface/LineSegmentConeLit.i
-
-# target to preprocess a source file
-HomogeneousSurface/LineSegmentConeLit.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/LineSegmentConeLit.cpp.i
-.PHONY : HomogeneousSurface/LineSegmentConeLit.cpp.i
-
-HomogeneousSurface/LineSegmentConeLit.s: HomogeneousSurface/LineSegmentConeLit.cpp.s
-.PHONY : HomogeneousSurface/LineSegmentConeLit.s
-
-# target to generate assembly for a file
-HomogeneousSurface/LineSegmentConeLit.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/LineSegmentConeLit.cpp.s
-.PHONY : HomogeneousSurface/LineSegmentConeLit.cpp.s
-
-HomogeneousSurface/ParabolaCone.o: HomogeneousSurface/ParabolaCone.cpp.o
-.PHONY : HomogeneousSurface/ParabolaCone.o
-
-# target to build an object file
-HomogeneousSurface/ParabolaCone.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/ParabolaCone.cpp.o
-.PHONY : HomogeneousSurface/ParabolaCone.cpp.o
-
-HomogeneousSurface/ParabolaCone.i: HomogeneousSurface/ParabolaCone.cpp.i
-.PHONY : HomogeneousSurface/ParabolaCone.i
-
-# target to preprocess a source file
-HomogeneousSurface/ParabolaCone.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/ParabolaCone.cpp.i
-.PHONY : HomogeneousSurface/ParabolaCone.cpp.i
-
-HomogeneousSurface/ParabolaCone.s: HomogeneousSurface/ParabolaCone.cpp.s
-.PHONY : HomogeneousSurface/ParabolaCone.s
-
-# target to generate assembly for a file
-HomogeneousSurface/ParabolaCone.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/ParabolaCone.cpp.s
-.PHONY : HomogeneousSurface/ParabolaCone.cpp.s
-
-HomogeneousSurface/ParabolaConeLit.o: HomogeneousSurface/ParabolaConeLit.cpp.o
-.PHONY : HomogeneousSurface/ParabolaConeLit.o
-
-# target to build an object file
-HomogeneousSurface/ParabolaConeLit.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/ParabolaConeLit.cpp.o
-.PHONY : HomogeneousSurface/ParabolaConeLit.cpp.o
-
-HomogeneousSurface/ParabolaConeLit.i: HomogeneousSurface/ParabolaConeLit.cpp.i
-.PHONY : HomogeneousSurface/ParabolaConeLit.i
-
-# target to preprocess a source file
-HomogeneousSurface/ParabolaConeLit.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/ParabolaConeLit.cpp.i
-.PHONY : HomogeneousSurface/ParabolaConeLit.cpp.i
-
-HomogeneousSurface/ParabolaConeLit.s: HomogeneousSurface/ParabolaConeLit.cpp.s
-.PHONY : HomogeneousSurface/ParabolaConeLit.s
-
-# target to generate assembly for a file
-HomogeneousSurface/ParabolaConeLit.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/HomogeneousSurface.dir/build.make CMakeFiles/HomogeneousSurface.dir/HomogeneousSurface/ParabolaConeLit.cpp.s
-.PHONY : HomogeneousSurface/ParabolaConeLit.cpp.s
 
 HomogeneousSurface/Project0.o: HomogeneousSurface/Project0.cpp.o
 .PHONY : HomogeneousSurface/Project0.o
@@ -411,27 +267,9 @@ help:
 	@echo "... HomogeneousSurface/Background.o"
 	@echo "... HomogeneousSurface/Background.i"
 	@echo "... HomogeneousSurface/Background.s"
-	@echo "... HomogeneousSurface/CircleCone.o"
-	@echo "... HomogeneousSurface/CircleCone.i"
-	@echo "... HomogeneousSurface/CircleCone.s"
-	@echo "... HomogeneousSurface/CircleConeLit.o"
-	@echo "... HomogeneousSurface/CircleConeLit.i"
-	@echo "... HomogeneousSurface/CircleConeLit.s"
 	@echo "... HomogeneousSurface/CoordinateAxes.o"
 	@echo "... HomogeneousSurface/CoordinateAxes.i"
 	@echo "... HomogeneousSurface/CoordinateAxes.s"
-	@echo "... HomogeneousSurface/LineSegmentCone.o"
-	@echo "... HomogeneousSurface/LineSegmentCone.i"
-	@echo "... HomogeneousSurface/LineSegmentCone.s"
-	@echo "... HomogeneousSurface/LineSegmentConeLit.o"
-	@echo "... HomogeneousSurface/LineSegmentConeLit.i"
-	@echo "... HomogeneousSurface/LineSegmentConeLit.s"
-	@echo "... HomogeneousSurface/ParabolaCone.o"
-	@echo "... HomogeneousSurface/ParabolaCone.i"
-	@echo "... HomogeneousSurface/ParabolaCone.s"
-	@echo "... HomogeneousSurface/ParabolaConeLit.o"
-	@echo "... HomogeneousSurface/ParabolaConeLit.i"
-	@echo "... HomogeneousSurface/ParabolaConeLit.s"
 	@echo "... HomogeneousSurface/Project0.o"
 	@echo "... HomogeneousSurface/Project0.i"
 	@echo "... HomogeneousSurface/Project0.s"
