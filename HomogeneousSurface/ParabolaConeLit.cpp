@@ -1,11 +1,11 @@
 #include "ParabolaConeLit.hpp"
 #include <cmath>
 
-#ifdef _WIN32
-#define NOMINMAX
-#include <windows.h>
-#endif
+#ifdef __APPLE__
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
+#endif
 
 // ——— векторная математика (минимум) ———
 static inline Vec3 vsub(const Vec3& a, const Vec3& b) { return { a.x - b.x, a.y - b.y, a.z - b.z }; }
