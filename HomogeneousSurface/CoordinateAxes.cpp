@@ -1,70 +1,230 @@
+/**
+ * CoordinateAxes.cpp
+ *
+ * Отрисовка системы координат XYZ с цветными осями и стрелками.
+ *
+ * Возможности:
+ * - Три оси с градиентным окрашиванием от центра
+ * - Стрелки на положительных концах осей
+ * - Точка в начале координат
+ * - Настраиваемая длина, толщина линий, размеры стрелок
+ * - Сглаживание линий (antialiasing)
+ */
+
 #include "CoordinateAxes.hpp"
 
+/**
+ * Отрисовка системы координат
+ *
+ * Алгоритм:
+ * 1. Сохранение состояний OpenGL
+ * 2. Настройка сглаживания линий
+ * 3. Рисование точки в начале координат (опционально)
+ * 4. Рисование трёх осей X, Y, Z с градиентом цвета
+ * 5. Рисование стрелок на положительных концах осей
+ * 6. Восстановление состояний
+ *
+ * Цветовая схема:
+ * - X-ось: от белого (центр) к красному (положительный конец)
+ * - Y-ось: от белого (центр) к зелёному (положительный конец)
+ * - Z-ось: от белого (центр) к синему (положительный конец)
+ *
+ * OpenGL функции:
+ * - glLineWidth() — задать толщину линий в пикселях
+ * - glPointSize() — задать размер точек в пикселях
+ * - glEnable(GL_LINE_SMOOTH) — сглаживание линий (антиалиасинг)
+ * - glEnable(GL_POINT_SMOOTH) — сглаживание точек
+ * - glBegin(GL_LINES) — рисовать линии (каждые 2 вершины = 1 линия)
+ * - glBegin(GL_POINTS) — рисовать точки (каждая вершина = 1 точка)
+ */
 void CoordinateAxes::draw() const
 {
-    // сохранить состояние
-    GLboolean wasLineSmooth = glIsEnabled(GL_LINE_SMOOTH);
-    GLboolean wasPointSmooth = glIsEnabled(GL_POINT_SMOOTH);
+    // ============================================================
+    // Сохранение текущих состояний OpenGL
+    // ============================================================
+    GLboolean wasLineSmooth = glIsEnabled(GL_LINE_SMOOTH);   // сглаживание линий
+    GLboolean wasPointSmooth = glIsEnabled(GL_POINT_SMOOTH); // сглаживание точек
 
-    if (mUseLineSmooth) glEnable(GL_LINE_SMOOTH); else glDisable(GL_LINE_SMOOTH);
+    // ============================================================
+    // Настройка сглаживания линий
+    // ============================================================
+    // LINE_SMOOTH включает антиалиасинг для линий (сглаживание зубчатых краёв)
+    if (mUseLineSmooth) glEnable(GL_LINE_SMOOTH);
+    else glDisable(GL_LINE_SMOOTH);
 
-    // точка-начало координат
+    // ============================================================
+    // Точка в начале координат (опционально)
+    // ============================================================
     if (mShowOriginPoint) {
+        // glPointSize — размер точки в пикселях
+        // Без GL_POINT_SMOOTH точка будет квадратной,
+        // с GL_POINT_SMOOTH — круглой и сглаженной
         glPointSize(10.0f);
         glEnable(GL_POINT_SMOOTH);
+
+        // Цвет точки — белый (центр координат)
         setColor(mZeroColor);
+
+        // GL_POINTS — режим отрисовки точек
         glBegin(GL_POINTS);
-        glVertex3f(0.f, 0.f, 0.f);
+        glVertex3f(0.f, 0.f, 0.f);  // начало координат (0,0,0)
         glEnd();
+
+        // Восстанавливаем состояние сглаживания точек
         if (!wasPointSmooth) glDisable(GL_POINT_SMOOTH);
     }
 
-    // оси
-    glLineWidth(mLineWidth);
-    glBegin(GL_LINES);
-    // X
-    setColor(mZeroColor); glVertex3f(-mLength, 0.f, 0.f);
-    setColor(mXColor);    glVertex3f(mLength, 0.f, 0.f);
-    // Y
-    setColor(mZeroColor); glVertex3f(0.f, -mLength, 0.f);
-    setColor(mYColor);    glVertex3f(0.f, mLength, 0.f);
-    // Z
-    setColor(mZeroColor); glVertex3f(0.f, 0.f, -mLength);
-    setColor(mZColor);    glVertex3f(0.f, 0.f, mLength);
-    glEnd();
+    // ============================================================
+    // Отрисовка трёх осей координат
+    // ============================================================
 
-    // стрелочки на положительных концах (как у тебя было)
+    // Устанавливаем толщину линий
+    glLineWidth(mLineWidth);  // например, 1.5 пикселя
+
+    // GL_LINES — режим отрисовки линий
+    // Каждые две вершины образуют одну линию
+    glBegin(GL_LINES);
+
+    // ------------------------------------------------------------
+    // X-ось (горизонтальная, красная)
+    // ------------------------------------------------------------
+    // Линия от (-mLength, 0, 0) до (+mLength, 0, 0)
+    // Градиент: белый в центре -> красный на конце
+    setColor(mZeroColor);  // белый (0,0,0)
+    glVertex3f(-mLength, 0.f, 0.f);  // отрицательный конец
+
+    setColor(mXColor);     // красный (+mLength,0,0)
+    glVertex3f(mLength, 0.f, 0.f);   // положительный конец
+
+    // ------------------------------------------------------------
+    // Y-ось (вертикальная, зелёная)
+    // ------------------------------------------------------------
+    // Линия от (0, -mLength, 0) до (0, +mLength, 0)
+    setColor(mZeroColor);  // белый
+    glVertex3f(0.f, -mLength, 0.f);  // отрицательный конец
+
+    setColor(mYColor);     // зелёный
+    glVertex3f(0.f, mLength, 0.f);   // положительный конец
+
+    // ------------------------------------------------------------
+    // Z-ось (глубина, синяя)
+    // ------------------------------------------------------------
+    // Линия от (0, 0, -mLength) до (0, 0, +mLength)
+    setColor(mZeroColor);  // белый
+    glVertex3f(0.f, 0.f, -mLength);  // отрицательный конец
+
+    setColor(mZColor);     // синий
+    glVertex3f(0.f, 0.f, mLength);   // положительный конец
+
+    glEnd();  // завершаем GL_LINES
+
+    // ============================================================
+    // Стрелки на положительных концах осей
+    // ============================================================
+    // Стрелки рисуются как конусы через gluCylinder
+    // Позиция стрелки смещена назад на высоту стрелки,
+    // чтобы конец стрелки был точно на конце оси
+
+    // Стрелка на X-оси (красная)
     setColor(mXColor);
     drawArrowAlongX(mLength - mArrowHeight * 1.0f, mArrowRadius, mArrowHeight);
 
+    // Стрелка на Y-оси (зелёная)
     setColor(mYColor);
     drawArrowAlongY(mLength - mArrowHeight * 1.0f, mArrowRadius, mArrowHeight);
 
+    // Стрелка на Z-оси (синяя)
     setColor(mZColor);
     drawArrowAlongZ(mLength - mArrowHeight * 1.0f, mArrowRadius, mArrowHeight);
 
-    // восстановить состояние
+    // ============================================================
+    // Восстановление состояний
+    // ============================================================
     if (!wasLineSmooth) glDisable(GL_LINE_SMOOTH);
 }
 
+/**
+ * Отрисовка стрелки вдоль оси X
+ *
+ * Стрелка — это конус с радиусом основания mArrowRadius,
+ * высотой mArrowHeight, расположенный на расстоянии x от начала координат.
+ *
+ * Процесс:
+ * 1. Сохранить текущую матрицу трансформаций
+ * 2. Переместиться в точку (x, 0, 0)
+ * 3. Повернуть на 90° вокруг Y, чтобы конус смотрел вдоль +X
+ * 4. Нарисовать конус (базовая ориентация — вдоль +Z)
+ * 5. Восстановить матрицу
+ *
+ * OpenGL функции:
+ * - glPushMatrix() — сохранить текущую матрицу MODEL-VIEW
+ * - glPopMatrix() — восстановить сохранённую матрицу
+ * - glTranslatef(x,y,z) — сдвинуть систему координат
+ * - glRotatef(angle, x,y,z) — повернуть систему координат на angle° вокруг вектора (x,y,z)
+ *
+ * GLU функции (библиотека утилит OpenGL):
+ * - gluNewQuadric() — создать объект для рисования примитивов
+ * - gluCylinder(quad, baseRadius, topRadius, height, slices, stacks):
+ *   - quad — quadric объект
+ *   - baseRadius — радиус основания (у нас mArrowRadius)
+ *   - topRadius — радиус вершины (0.0 для конуса)
+ *   - height — высота конуса
+ *   - slices — количество сегментов по окружности (12 = 12-угольник)
+ *   - stacks — количество слоёв по высоте (1 = без подразделения)
+ * - gluDeleteQuadric(quad) — освободить quadric объект
+ *
+ * @param x - позиция основания стрелки по оси X
+ * @param radius - радиус основания конуса
+ * @param height - высота конуса
+ */
 void CoordinateAxes::drawArrowAlongX(GLfloat x, GLfloat radius, GLfloat height)
 {
-    glPushMatrix();
-    glTranslatef(x, 0.f, 0.f);
-    glRotatef(90.f, 0.f, 1.f, 0.f); // вдоль +X
+    glPushMatrix();  // сохраняем текущую матрицу
 
+    // Перемещаемся в точку (x, 0, 0) — основание стрелки
+    glTranslatef(x, 0.f, 0.f);
+
+    // Поворачиваем на 90° вокруг оси Y (0,1,0)
+    // gluCylinder рисует конус вдоль оси +Z по умолчанию,
+    // поворот на 90° вокруг Y направляет его вдоль +X
+    glRotatef(90.f, 0.f, 1.f, 0.f);
+
+    // Создаём quadric объект для рисования
     GLUquadric* quad = gluNewQuadric();
+
+    // Рисуем конус:
+    // - основание с радиусом radius
+    // - вершина с радиусом 0 (острый конус)
+    // - высота height
+    // - 12 сегментов (чем больше, тем более гладкий конус)
     gluCylinder(quad, radius, 0.0, height, 12, 1);
+
+    // Освобождаем quadric объект
     gluDeleteQuadric(quad);
 
-    glPopMatrix();
+    glPopMatrix();  // восстанавливаем матрицу
 }
 
+/**
+ * Отрисовка стрелки вдоль оси Y
+ *
+ * Аналогично drawArrowAlongX, но:
+ * - Перемещение в (0, y, 0)
+ * - Поворот на -90° вокруг оси X для направления вдоль +Y
+ *
+ * @param y - позиция основания стрелки по оси Y
+ * @param radius - радиус основания конуса
+ * @param height - высота конуса
+ */
 void CoordinateAxes::drawArrowAlongY(GLfloat y, GLfloat radius, GLfloat height)
 {
     glPushMatrix();
-    glTranslatef(0.f, y, 0.f);
-    glRotatef(-90.f, 1.f, 0.f, 0.f); // вдоль +Y
+
+    glTranslatef(0.f, y, 0.f);  // перемещаемся в (0, y, 0)
+
+    // Поворот на -90° вокруг оси X (1,0,0)
+    // Отрицательный угол = поворот по часовой стрелке (если смотреть с конца оси)
+    glRotatef(-90.f, 1.f, 0.f, 0.f);
 
     GLUquadric* quad = gluNewQuadric();
     gluCylinder(quad, radius, 0.0, height, 12, 1);
@@ -73,10 +233,23 @@ void CoordinateAxes::drawArrowAlongY(GLfloat y, GLfloat radius, GLfloat height)
     glPopMatrix();
 }
 
+/**
+ * Отрисовка стрелки вдоль оси Z
+ *
+ * Самый простой случай:
+ * - Перемещение в (0, 0, z)
+ * - Поворот НЕ нужен (gluCylinder уже рисует вдоль +Z)
+ *
+ * @param z - позиция основания стрелки по оси Z
+ * @param radius - радиус основания конуса
+ * @param height - высота конуса
+ */
 void CoordinateAxes::drawArrowAlongZ(GLfloat z, GLfloat radius, GLfloat height)
 {
     glPushMatrix();
-    glTranslatef(0.f, 0.f, z);       // вдоль +Z (без поворота)
+
+    glTranslatef(0.f, 0.f, z);  // перемещаемся в (0, 0, z)
+    // Поворот не нужен — gluCylinder по умолчанию рисует вдоль +Z
 
     GLUquadric* quad = gluNewQuadric();
     gluCylinder(quad, radius, 0.0, height, 12, 1);

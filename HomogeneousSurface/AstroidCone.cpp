@@ -1,3 +1,14 @@
+/**
+ * AstroidCone.cpp
+ *
+ * Реализация конической однородной поверхности на основе астроиды.
+ *
+ * Математика:
+ * - Астроида: x = a·cos³(t), y = a·sin³(t), где t ∈ [0, 2π]
+ * - Конус: точки на поверхности получаются масштабированием контура от апекса
+ * - Q(s,t) = s·P(t), где P(t) — точка на контуре, s — коэффициент масштабирования
+ */
+
 #include "AstroidCone.hpp"
 #include <cmath>
 
@@ -11,115 +22,248 @@
 #define M_PI 3.14159265358979323846
 #endif
 
+/**
+ * Конструктор
+ * @param levels   - количество уровней (колец) от апекса, L ∈ [1, ∞)
+ * @param segments - количество точек на контуре астроиды, S ∈ [3, ∞)
+ * @param depth    - глубина конуса по оси Z, D ∈ [0, ∞)
+ */
 AstroidCone::AstroidCone(int levels, int segments, float depth)
     : mLevels(levels), mSegments(segments), mDepth(depth), mSize(2.0f) {
 }
 
+// Сеттеры для параметров
 void AstroidCone::setLevels(int v) { mLevels = v; }
 void AstroidCone::setSegments(int v) { mSegments = v; }
 void AstroidCone::setDepth(float v) { mDepth = v; }
 void AstroidCone::setSize(float size) { mSize = size; }
 
+/**
+ * Построение геометрии конической поверхности
+ *
+ * Алгоритм:
+ * 1. Создать апекс (вершину конуса) в (0,0,0)
+ * 2. Сгенерировать кольца вершин для уровней -L..-1 и +1..+L
+ * 3. Создать треугольные веера от апекса к первым кольцам
+ * 4. Сшить соседние кольца четырёхугольниками (квадами из 2 треугольников)
+ *
+ * Структура данных:
+ * - mVerts: массив вершин (Vec3)
+ * - mIdx: массив индексов (по 3 индекса = 1 треугольник)
+ */
 void AstroidCone::build() {
     mVerts.clear();
     mIdx.clear();
 
-    const int   L = std::max(1, mLevels);
-    const int   S = std::max(1, mSegments);
-    const float D = std::max(0.f, mDepth);
+    // Защита от некорректных параметров
+    const int   L = std::max(1, mLevels);      // минимум 1 уровень
+    const int   S = std::max(1, mSegments);    // минимум 1 сегмент (на практике >= 3)
+    const float D = std::max(0.f, mDepth);     // глубина >= 0
 
-    // Апекс (вершина конуса)
-    const unsigned apex = 0;
+    // ============================================================
+    // ШАГ 1: Создание апекса (вершина конуса)
+    // ============================================================
+    const unsigned apex = 0;  // индекс апекса = 0
     mVerts.push_back({ 0.f, 0.f, 0.f });
 
-    // Функция для точки на астроиде в плоскости z=1
+    // ============================================================
+    // ШАГ 2: Функция генерации точки на астроиде
+    // ============================================================
+    // Параметрическое уравнение астроиды:
+    // x(t) = a · cos³(α), где α = 2πt
+    // y(t) = a · sin³(α)
+    // z = 1 (контур в плоскости z=1)
+    //
+    // t ∈ [0, 1] — нормализованный параметр вдоль контура
     auto pointOnAstroidZ1 = [&](float t)->Vec3 {
-        float ang = t * 2.f * (float)M_PI;
-        float ct = std::cos(ang);
-        float st = std::sin(ang);
+        float ang = t * 2.f * (float)M_PI;  // преобразуем t∈[0,1] в α∈[0,2π]
+        float ct = std::cos(ang);           // cos(α)
+        float st = std::sin(ang);           // sin(α)
         return {
-            mSize * ct * ct * ct,  // x = a * cos³(t)
-            mSize * st * st * st,  // y = a * sin³(t)
-            1.f
+            mSize * ct * ct * ct,  // x = a · cos³(α)
+            mSize * st * st * st,  // y = a · sin³(α)
+            1.f                    // z = 1 (базовая плоскость контура)
         };
     };
 
-    // Генерация колец на разных уровнях
+    // ============================================================
+    // ШАГ 3: Генерация колец (rings) на разных уровнях
+    // ============================================================
+    // Каждое кольцо — это контур астроиды, масштабированный на коэффициент s
+    // и смещённый по Z на величину z = s·D
+    //
+    // Уровень l ∈ {-L..-1} ∪ {+1..+L}
+    // Коэффициент масштабирования: s = l/L ∈ [-1, -1/L] ∪ [1/L, 1]
+    // Z-координата: z = s·D
+    //
+    // Пример для L=3, D=3:
+    //   l=-3: s=-1.0, z=-3.0
+    //   l=-2: s=-0.67, z=-2.0
+    //   l=-1: s=-0.33, z=-1.0
+    //   l=0:  апекс (не кольцо)
+    //   l=+1: s=+0.33, z=+1.0
+    //   l=+2: s=+0.67, z=+2.0
+    //   l=+3: s=+1.0, z=+3.0
     auto emitRing = [&](int l) {
-        float s = (float)l / (float)L;   // s ∈ [-1..-1/L] U [1/L..1]
-        float z = s * D;
+        float s = (float)l / (float)L;       // коэффициент масштабирования
+        float z = s * D;                     // Z-координата кольца
+
+        // Генерируем S+1 точек (последняя = первой для замыкания)
         for (int i = 0; i <= S; ++i) {
-            float t = (float)i / (float)S;
-            Vec3  P = pointOnAstroidZ1(t);
+            float t = (float)i / (float)S;   // параметр t ∈ [0, 1]
+            Vec3  P = pointOnAstroidZ1(t);   // точка на базовом контуре (z=1)
+
+            // Масштабируем точку и добавляем в массив вершин
+            // Q = s·P = (s·x, s·y, z)
             mVerts.push_back({ s * P.x, s * P.y, z });
         }
     };
 
-    // низ: -L..-1
+    // Генерируем кольца для нижней половины конуса (z < 0)
     for (int l = -L; l <= -1; ++l) emitRing(l);
-    // верх: +1..+L
+
+    // Генерируем кольца для верхней половины конуса (z > 0)
     for (int l = 1; l <= L; ++l) emitRing(l);
 
-    // Веера от апекса к первым кольцам
+    // ============================================================
+    // ШАГ 4: Треугольные веера от апекса к первым кольцам
+    // ============================================================
+    // Веер (fan) — набор треугольников с общей вершиной (апексом)
+    //
+    // Для каждого сегмента i создаём треугольник:
+    //   - Нижний веер: (apex, ring(-1, i+1), ring(-1, i))
+    //   - Верхний веер: (apex, ring(+1, i), ring(+1, i+1))
+    //
+    // Порядок вершин важен для правильной ориентации нормалей (CCW = counterclockwise)
     for (int i = 0; i < S; ++i) {
-        // нижний веер
-        mIdx.push_back(apex);
-        mIdx.push_back(ringIndex(-1, i + 1));
-        mIdx.push_back(ringIndex(-1, i));
+        // Нижний веер (apex -> первое кольцо снизу)
+        mIdx.push_back(apex);                    // вершина 0: апекс
+        mIdx.push_back(ringIndex(-1, i + 1));    // вершина 1: следующая точка на кольце
+        mIdx.push_back(ringIndex(-1, i));        // вершина 2: текущая точка на кольце
 
-        // верхний веер
-        mIdx.push_back(apex);
-        mIdx.push_back(ringIndex(+1, i));
-        mIdx.push_back(ringIndex(+1, i + 1));
+        // Верхний веер (apex -> первое кольцо сверху)
+        mIdx.push_back(apex);                    // вершина 0: апекс
+        mIdx.push_back(ringIndex(+1, i));        // вершина 1: текущая точка
+        mIdx.push_back(ringIndex(+1, i + 1));    // вершина 2: следующая точка
     }
 
-    // сшивка низ: l = -L..-2
+    // ============================================================
+    // ШАГ 5: Сшивка соседних колец четырёхугольниками (quads)
+    // ============================================================
+    // Между каждой парой соседних колец создаём полосу четырёхугольников
+    // Каждый квад разбивается на 2 треугольника
+    //
+    // Вершины квада:
+    //   v00 --- v01     (кольцо l, точки i и i+1)
+    //    |  \    |
+    //    |    \  |
+    //   v10 --- v11     (кольцо l+1, точки i и i+1)
+    //
+    // Треугольники:
+    //   1) (v00, v01, v10)
+    //   2) (v01, v11, v10)
+
+    // Сшивка нижней половины конуса (от l=-L до l=-2)
     for (int l = -L; l <= -2; ++l) {
         for (int i = 0; i < S; ++i) {
-            unsigned v00 = ringIndex(l, i);
-            unsigned v01 = ringIndex(l, i + 1);
-            unsigned v10 = ringIndex(l + 1, i);
-            unsigned v11 = ringIndex(l + 1, i + 1);
-            mIdx.push_back(v00); mIdx.push_back(v01); mIdx.push_back(v10);
-            mIdx.push_back(v01); mIdx.push_back(v11); mIdx.push_back(v10);
+            // Получаем индексы 4 вершин квада
+            unsigned v00 = ringIndex(l, i);         // текущее кольцо, текущая точка
+            unsigned v01 = ringIndex(l, i + 1);     // текущее кольцо, следующая точка
+            unsigned v10 = ringIndex(l + 1, i);     // следующее кольцо, текущая точка
+            unsigned v11 = ringIndex(l + 1, i + 1); // следующее кольцо, следующая точка
+
+            // Первый треугольник квада
+            mIdx.push_back(v00);
+            mIdx.push_back(v01);
+            mIdx.push_back(v10);
+
+            // Второй треугольник квада
+            mIdx.push_back(v01);
+            mIdx.push_back(v11);
+            mIdx.push_back(v10);
         }
     }
 
-    // сшивка верх: l = 1..L-1
+    // Сшивка верхней половины конуса (от l=+1 до l=L-1)
     for (int l = 1; l <= L - 1; ++l) {
         for (int i = 0; i < S; ++i) {
+            // Аналогично нижней половине
             unsigned v00 = ringIndex(l, i);
             unsigned v01 = ringIndex(l, i + 1);
             unsigned v10 = ringIndex(l + 1, i);
             unsigned v11 = ringIndex(l + 1, i + 1);
-            mIdx.push_back(v00); mIdx.push_back(v01); mIdx.push_back(v10);
-            mIdx.push_back(v01); mIdx.push_back(v11); mIdx.push_back(v10);
+
+            mIdx.push_back(v00);
+            mIdx.push_back(v01);
+            mIdx.push_back(v10);
+
+            mIdx.push_back(v01);
+            mIdx.push_back(v11);
+            mIdx.push_back(v10);
         }
     }
 }
 
+/**
+ * Отрисовка поверхности без освещения
+ *
+ * OpenGL функции:
+ * - glIsEnabled(GL_LIGHTING) — проверить, включено ли освещение
+ * - glDisable(GL_LIGHTING) — выключить освещение (используем простой цвет)
+ * - glEnable(GL_BLEND) — включить альфа-смешивание для прозрачности
+ * - glBlendFunc(src, dst) — задать функцию смешивания цветов:
+ *   GL_SRC_ALPHA = использовать альфа-канал источника
+ *   GL_ONE_MINUS_SRC_ALPHA = (1 - alpha) для фона
+ * - glColor4f(r,g,b,a) — задать цвет RGBA ∈ [0,1]
+ * - glBegin(GL_TRIANGLES) — начать рисовать треугольники
+ * - glVertex3f(x,y,z) — добавить вершину
+ * - glEnd() — закончить примитив
+ */
 void AstroidCone::draw() const {
-    // Временно без освещения
+    // Сохраняем состояние освещения
     GLboolean wasLighting = glIsEnabled(GL_LIGHTING);
-    if (wasLighting) glDisable(GL_LIGHTING);
+    if (wasLighting) glDisable(GL_LIGHTING);  // временно отключаем освещение
 
-    // Полупрозрачная заливка
-    glEnable(GL_BLEND);
+    // ============================================================
+    // Настройка прозрачности (blending)
+    // ============================================================
+    glEnable(GL_BLEND);  // включаем альфа-смешивание
+
+    // Формула смешивания: Result = Src*SrcFactor + Dst*DstFactor
+    // GL_SRC_ALPHA: SrcFactor = alpha
+    // GL_ONE_MINUS_SRC_ALPHA: DstFactor = (1 - alpha)
+    // Результат: Result = Src*alpha + Dst*(1-alpha)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    // Красивый цвет для астроиды
-    glColor4f(0.9f, 0.3f, 0.4f, 0.5f);  // Розовато-красный
+    // ============================================================
+    // Установка цвета (без освещения используется glColor)
+    // ============================================================
+    // RGBA: (R=0.9, G=0.3, B=0.4, A=0.5)
+    // R,G,B ∈ [0,1] — интенсивность красного, зелёного, синего
+    // A ∈ [0,1] — непрозрачность (0=прозрачный, 1=непрозрачный)
+    glColor4f(0.9f, 0.3f, 0.4f, 0.5f);  // розовато-красный, полупрозрачный
 
-    glBegin(GL_TRIANGLES);
+    // ============================================================
+    // Отрисовка треугольников
+    // ============================================================
+    glBegin(GL_TRIANGLES);  // начинаем рисовать треугольники
+
+    // mIdx содержит индексы вершин по 3 (каждые 3 = 1 треугольник)
     for (size_t k = 0; k + 2 < mIdx.size(); k += 3) {
-        const Vec3& a = mVerts[mIdx[k + 0]];
-        const Vec3& b = mVerts[mIdx[k + 1]];
-        const Vec3& c = mVerts[mIdx[k + 2]];
+        // Получаем 3 вершины треугольника из массива
+        const Vec3& a = mVerts[mIdx[k + 0]];  // первая вершина
+        const Vec3& b = mVerts[mIdx[k + 1]];  // вторая вершина
+        const Vec3& c = mVerts[mIdx[k + 2]];  // третья вершина
+
+        // Передаём вершины в OpenGL
+        // glVertex3f — добавляет 3D-точку в текущий примитив
         glVertex3f(a.x, a.y, a.z);
         glVertex3f(b.x, b.y, b.z);
         glVertex3f(c.x, c.y, c.z);
     }
-    glEnd();
 
+    glEnd();  // заканчиваем примитив GL_TRIANGLES
+
+    // Восстанавливаем состояние освещения
     if (wasLighting) glEnable(GL_LIGHTING);
 }
