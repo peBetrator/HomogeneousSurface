@@ -1,0 +1,3 @@
+/Users/daniilgutu/CLionProjects/HomogeneousSurface/build/CMakeFiles/HomogeneousSurface.dir
+/Users/daniilgutu/CLionProjects/HomogeneousSurface/build/CMakeFiles/edit_cache.dir
+/Users/daniilgutu/CLionProjects/HomogeneousSurface/build/CMakeFiles/rebuild_cache.dir

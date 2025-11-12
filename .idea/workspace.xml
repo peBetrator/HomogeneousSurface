@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="CMakeProjectFlavorService">
+    <option name="flavorId" value="CMakePlainProjectFlavor" />
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="4f60a32b-29a8-4a70-a660-4cb826284920" name="Changes" comment="Comment code to not fuck up" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="dg/astroid" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;gutudaniil17&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/peBetrator/HomogeneousSurface.git&quot;,
+    &quot;accountId&quot;: &quot;2fffefc6-77cf-4d74-a4a1-43ce6ac0801c&quot;
+  },
+  &quot;recentNewPullRequestHead&quot;: {
+    &quot;server&quot;: {
+      &quot;useHttp&quot;: false,
+      &quot;host&quot;: &quot;github.com&quot;,
+      &quot;port&quot;: null,
+      &quot;suffix&quot;: null
+    },
+    &quot;owner&quot;: &quot;peBetrator&quot;,
+    &quot;repository&quot;: &quot;HomogeneousSurface&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="35L8Jcz0DoYjKdK1yVfvJQ7qyVA" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "C/C++ File.Project0.cpp.executor": "Run",
+    "RunOnceActivity.RadMigrateCodeStyle": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Project0.cpp" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="HomogeneousSurface" TARGET_NAME="Project0.cpp" CONFIG_NAME="Project0.cpp">
+      <option name="sourceFile" value="HomogeneousSurface/Project0.cpp" />
+      <method v="2">
+        <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="C/C++ File.Project0.cpp" />
+        <item itemvalue="C/C++ File.Project0.cpp" />
+        <item itemvalue="C/C++ File.Project0.cpp" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4f60a32b-29a8-4a70-a660-4cb826284920" name="Changes" comment="" />
+      <created>1762877921456</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1762877921456</updated>
+      <workItem from="1762877923425" duration="12693000" />
+      <workItem from="1762935811066" duration="3829000" />
+    </task>
+    <task id="LOCAL-00001" summary="Make it run on Mac">
+      <option name="closed" value="true" />
+      <created>1762886234979</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1762886234979</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Make it run on Mac">
+      <option name="closed" value="true" />
+      <created>1762886288564</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1762886288564</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Make it run on Mac">
+      <option name="closed" value="true" />
+      <created>1762886744905</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1762886744905</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Make it run on Mac">
+      <option name="closed" value="true" />
+      <created>1762886831963</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1762886831963</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Make it run on Mac">
+      <option name="closed" value="true" />
+      <created>1762886881927</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1762886881927</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Astroid">
+      <option name="closed" value="true" />
+      <created>1762887983746</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1762887983746</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Triangles">
+      <option name="closed" value="true" />
+      <created>1762891581739</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1762891581739</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Triangles clean up code">
+      <option name="closed" value="true" />
+      <created>1762891747500</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1762891747500</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Astroid clean up code">
+      <option name="closed" value="true" />
+      <created>1762892086897</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1762892086897</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Comment code to not fuck up">
+      <option name="closed" value="true" />
+      <created>1762893511255</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1762893511255</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Make it run on Mac" />
+    <MESSAGE value="Astroid" />
+    <MESSAGE value="Triangles" />
+    <MESSAGE value="Triangles clean up code" />
+    <MESSAGE value="Astroid clean up code" />
+    <MESSAGE value="Comment code to not fuck up" />
+    <option name="LAST_COMMIT_MESSAGE" value="Comment code to not fuck up" />
+  </component>
+</project>
